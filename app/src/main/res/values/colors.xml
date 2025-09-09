@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#397283</color>
+    <color name="purple_500">#397283</color>
+    <color name="purple_700">#F4F8FB</color>
+    <color name="teal_200">#397283</color>
+    <color name="teal_700">#397283</color>
+    <color name="background">#F4F8FB</color>
+    <color name="black">#000000</color>
+    <color name="black_light">#616977</color>
+    <color name="black_light_new">#6B6C6D</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#AFB1B7</color>
+    <color name="gray1">#6B6C6D</color>
+    <color name="purple">#397283</color>
+    <color name="purple_light">#EFE3FF</color>
+    <color name="stock">#DEDEDE</color>
+    <color name="btn_bg">#F4F8FB</color>
+    <color name="stock_new">#EFF2FA</color>
+    <color name="green">#0F8904</color>
+    <color name="light_green">#EAFFE8</color>
+    <color name="red">#FF3C00</color>
+    <color name="divider_color">#EEEEF0</color>
+    <color name="switch_color">#D6D7DA</color>
+    <color name="popup_bg_color">#FFFFFF</color>
+    <color name="setting_round_bg">#F5F5F5</color>
+    <color name="setting_sub_text_color">#01051D</color>
+    <color name="swipe_stroke_color">#E6E6E6</color>
+    <color name="block_bg">#F3F3F4</color>
+    <color name="sim_bg">#DDDDE1</color>
+
+    <color name="colorHover">#30000000</color>
+
+    <color name="white_og">#FFFFFF</color>
+    <color name="black_og">#000000</color>
+    <color name="rd_un_check_dot">#4E5161</color>
+    <color name="red_new">#FF3B00</color>
+    <color name="red_light">#FFEBEB</color>
+    <color name="pink_light">#EFE3FF</color>
+    <color name="button_color">#397283</color>
+    <color name="line">#E4E4E5</color>
+    <color name="border">#D8DDEA</color>
+    <color name="border_new">#E5E7EB</color>
+    <color name="onboarding_bottom_bg">#F4F8FB</color>
+    <color name="onboarding_overlay_bottom_bg">#F4F8FB</color>
+    <color name="bg_color">#F4F8FB</color>
+    <color name="e0e0e0">#E0E0E0</color>
+    <color name="setting_text_color">#111827</color>
+    <color name="setting_title_color">#6B6C6D</color>
+    <color name="setting_text_light">#6B6C6D</color>
+    <color name="_939393">#939393</color>
+    <color name="_292d32">#292D32</color>
+    <color name="_6b6c6d">#6B6C6D</color>
+
+    <color name="contact_scroll_index_color">#0059FF</color>
+    <color name="orange">#FF3F3F</color>
+    <color name="intro_sub_text_color">#4D4D4D</color>
+    <color name="grey_light">#EEEEF0</color>
+    <color name="search_hint">#848691</color>
+    <color name="grey_sms_line">#D8DDEA</color>
+    <color name="_111518">#111518</color>
+    <color name="_121214">#121214</color>
+    <color name="_767676">#767676</color>
+    <color name="f52b34">#F52B34</color>
+    <color name="f9dddf">#F9DDDF</color>
+    <color name="_20b56e">#20B56E</color>
+    <color name="dfe9ed">#DFE9ED</color>
+    <color name="_397283">#397283</color>
+    <color name="_0c1319">#0C1319</color>
+    <color name="e6e6e6">#E6E6E6</color>
+    <color name="_06b7280">#6B7280</color>
+
+    <color name="ripple_foreground">#33FFFFFF</color>
+    <color name="my_grey">#E6E6E6</color>
+    <color name="white_10">#1AFFFFFF</color>
+</resources>

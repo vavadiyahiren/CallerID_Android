@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   >
+
+    <item
+        android:id="@+id/menuAllCall"
+        android:icon="@drawable/ic_call"
+        android:title="@string/all_call"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuIncomingCall"
+        android:icon="@drawable/ic_incoming_call"
+        android:title="@string/incoming_call"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menuMissedCall"
+        android:icon="@drawable/ic_missed_call"
+        android:title="@string/missed_call"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menuOutgoingCall"
+        android:title="@string/outgoing_call"
+        android:icon="@drawable/ic_outgoing_call"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuDeleteAllCalls"
+        android:title="@string/delete_all_calls"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="never" />
+
+
+</menu>
