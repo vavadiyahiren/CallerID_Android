@@ -5,5 +5,5 @@
     android:viewportHeight="4">
   <path
       android:pathData="M0.9,0H31.9L29.679,3.152C29.305,3.684 28.695,4 28.044,4H4.756C4.105,4 3.495,3.684 3.121,3.152L0.9,0Z"
-      android:fillColor="@color/purple"/>
+      android:fillColor="@color/purple_keypad"/>
 </vector>

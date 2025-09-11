@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -22,6 +24,8 @@ import com.callerid.callmanager.activities.EditProfileActivity;
 import com.callerid.callmanager.activities.FeedbackActivity;
 import com.callerid.callmanager.activities.LanguageActivity;
 import com.callerid.callmanager.activities.MyBlockListActivity;
+import com.callerid.callmanager.utilities.AppPref;
+import com.callerid.callmanager.utilities.Constant;
 import com.callerid.callmanager.utilities.Utility;
 
 import java.util.Objects;
@@ -32,7 +36,8 @@ public class SettingFragment extends Fragment {
     AppCompatImageView imgProfileEdit;
     LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList;
     AppCompatTextView txtLanguage;
-    Switch switchCBN, switchBCNC, switchBHN;
+    Switch switchCBN, switchBCNC, switchTheme;
+    boolean isFirstTime = true;
 
     ActivityResultLauncher<Intent> editProfileLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -186,8 +191,37 @@ public class SettingFragment extends Fragment {
 
         switchCBN = view.findViewById(R.id.switchCBN);
         switchBCNC = view.findViewById(R.id.switchBCNC);
-        switchBHN = view.findViewById(R.id.switchBHN);
+        switchTheme = view.findViewById(R.id.switchTheme);
 
+        boolean KEY_PAD_DIAL_TONE = AppPref.getBooleanPref(requireActivity(), Constant.KEY_PAD_DIAL_TONE, false);
+        switchBCNC.setChecked(KEY_PAD_DIAL_TONE);
+
+        switchBCNC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                AppPref.setBooleanPref(requireActivity(), Constant.KEY_PAD_DIAL_TONE, b);
+            }
+        });
+
+        boolean themeModeDark = AppPref.getBooleanPref(requireActivity(), Constant.THEME_MODE, false);
+        switchTheme.setChecked(themeModeDark);
+
+
+        // Setup listener
+        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!isFirstTime) {
+                // Save preference
+                AppPref.setBooleanPref(requireActivity(), Constant.THEME_MODE, isChecked);
+
+              // Change theme
+                  AppCompatDelegate.setDefaultNightMode(
+                        isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+                );
+            }
+        });
+
+        // Allow listener to trigger from now on
+        isFirstTime = false;
 
         return view;
     }

@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:background="@color/background"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -42,7 +42,7 @@
                 android:id="@+id/imgHome"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_home_selected" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -80,7 +80,7 @@
                 android:id="@+id/imgBlocking"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_search_unselected" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -117,7 +117,7 @@
                 android:id="@+id/imgKeypad"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_keypad_unselected" />
 
 
@@ -156,7 +156,7 @@
                 android:id="@+id/imgContacts"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_contacts_unselect" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -194,7 +194,7 @@
                 android:id="@+id/imgProfile"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_4sdp"
                 app:srcCompat="@drawable/ic_profile_unselect" />
 
             <androidx.appcompat.widget.AppCompatTextView

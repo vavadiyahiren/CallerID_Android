@@ -55,6 +55,41 @@
                         app:riv_oval="true"
                         app:riv_tile_mode="clamp" />
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvContactBg"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_3sdp"
+                        android:background="@color/bg_color"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="#D1E4F6"
+                        app:cardCornerRadius="@dimen/_30sdp"
+                        app:cardElevation="0dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/txtFirstName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/poppins_regular"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="A"
+                                android:textAllCaps="true"
+                                android:textColor="@color/bg_color"
+                                android:textSize="@dimen/_14ssp" />
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtName"
                         android:layout_width="wrap_content"

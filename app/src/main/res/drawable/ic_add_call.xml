@@ -11,15 +11,15 @@
         android:fillColor="#41A5EE"/>
     <path
         android:pathData="M16.219,16.276C19.651,16.276 22.438,19.063 22.438,22.496C22.438,22.816 22.178,23.076 21.858,23.076H10.58C10.26,23.076 10,22.816 10,22.496C10,19.063 12.786,16.276 16.219,16.276H16.219Z"
-        android:fillColor="@color/white"/>
+        android:fillColor="@color/white_og"/>
     <path
         android:pathData="M16.219,16C18.173,16 19.757,14.416 19.757,12.462C19.757,10.508 18.173,8.924 16.219,8.924C14.265,8.924 12.681,10.508 12.681,12.462C12.681,14.416 14.265,16 16.219,16Z"
-        android:fillColor="@color/white"/>
+        android:fillColor="@color/white_og"/>
     <path
         android:pathData="M22.447,14.618H19.821C19.516,14.618 19.269,14.866 19.269,15.171C19.269,15.476 19.516,15.724 19.821,15.724H22.447C22.752,15.724 23,15.476 23,15.171C23,14.866 22.752,14.618 22.447,14.618Z"
-        android:fillColor="@color/white"/>
+        android:fillColor="@color/white_og"/>
     <path
         android:pathData="M21.687,16.483V13.858C21.687,13.552 21.44,13.305 21.134,13.305C20.829,13.305 20.581,13.552 20.581,13.858V16.483C20.581,16.788 20.829,17.036 21.134,17.036C21.44,17.036 21.687,16.788 21.687,16.483Z"
-        android:fillColor="@color/white"/>
+        android:fillColor="@color/white_og"/>
   </group>
 </vector>

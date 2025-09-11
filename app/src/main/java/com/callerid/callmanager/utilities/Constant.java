@@ -11,6 +11,9 @@ public class Constant {
     public static final String LOGIN = "Login";
 
     public static final String LAST_SYNC_TIME = "LAST_SYNC_TIME";
+
+    public static final String KEY_PAD_DIAL_TONE = "KEY_PAD_DIAL_TONE";
+    public static final String THEME_MODE = "THEME_MODE";
     public static final String LAST_SYNC_TIME_CONTACT = "LAST_SYNC_TIME_CONTACT";
     public static final String KEY_EXIT_COUNT = "exit_count";
     public static final String LANGUAGE_SET = "LanguageSet";

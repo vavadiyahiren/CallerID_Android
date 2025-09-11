@@ -11,7 +11,7 @@
     <item android:state_checked="false">
         <shape android:dither="true" android:shape="rectangle" android:useLevel="false" android:visible="true">
             <corners android:radius="@dimen/_20sdp" />
-            <solid android:color="@color/white" />
+            <solid android:color="@color/white_og" />
             <size android:width="@dimen/_20sdp" android:height="@dimen/_20sdp" />
             <stroke android:width="@dimen/_4sdp" android:color="@android:color/transparent" />
         </shape>

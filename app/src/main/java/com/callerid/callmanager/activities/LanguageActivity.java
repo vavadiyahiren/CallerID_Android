@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.LanguageAdapter;
 import com.callerid.callmanager.models.LanguageModel;
+import com.callerid.callmanager.utilities.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ import java.util.List;
 public class LanguageActivity extends AppCompatActivity {
 
     private static final String TAG = "LanguageActivity";
-
     AppCompatImageView imgBack;
     AppCompatTextView txtContinue;
     RecyclerView rvLanguage;
@@ -31,6 +31,8 @@ public class LanguageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
+
+        Utility.setStatusBar(this);
 
         imgBack = findViewById(R.id.imgBack);
         txtContinue = findViewById(R.id.txtContinue);

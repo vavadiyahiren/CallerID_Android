@@ -88,7 +88,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:includeFontPadding="false"
                     android:text="@string/say_goodbye_to_unknown_caller"
-                    android:textColor="@color/setting_text_color"
+                    android:textColor="@color/setting_text_light"
                     android:textSize="@dimen/_11sdp" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -188,7 +188,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/preferences"
                     android:textAllCaps="true"
-                    android:textColor="@color/setting_title_color"
+                    android:textColor="@color/setting_header_title_color"
                     android:textSize="@dimen/_12sdp" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -378,7 +378,7 @@
 
 
                     <Switch
-                        android:id="@+id/switchBHN"
+                        android:id="@+id/switchTheme"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -562,7 +562,7 @@
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/general"
                     android:textAllCaps="true"
-                    android:textColor="@color/setting_title_color"
+                    android:textColor="@color/setting_header_title_color"
                     android:textSize="@dimen/_12sdp" />
 
 

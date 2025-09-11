@@ -16,8 +16,10 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rrToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="visible"
                 android:paddingHorizontal="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -59,6 +61,59 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/llToolbarSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBack"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:padding="@dimen/_1sdp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_back_btn" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/search_background_new1">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_8sdp"
+                        android:src="@drawable/ic_search_new" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="Search here"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_9sdp"
+                        app:tint="@color/black"
+                        android:src="@drawable/ic_close_search" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
@@ -66,7 +121,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_50sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
             android:orientation="vertical">
 
             <!-- <androidx.appcompat.widget.LinearLayoutCompat

@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:background="#E0E0E0" />
+        android:background="@color/e0e0e0" />
 
     <!-- Incoming Calls -->
     <LinearLayout
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:background="#E0E0E0" />
+        android:background="@color/e0e0e0" />
 
     <!-- Missed Calls -->
     <LinearLayout
@@ -116,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
-        android:background="#E0E0E0" />
+        android:background="@color/e0e0e0" />
 
     <!-- Outgoing Calls -->
     <LinearLayout

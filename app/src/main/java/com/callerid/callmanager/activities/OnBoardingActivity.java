@@ -97,6 +97,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
             public void onClick(View view) {
 
                 requestCallScreeningRole();
+                //requestCallDialingRole();
 
               /*  Dexter.withContext(getApplicationContext())
                         .withPermissions(
@@ -164,6 +165,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
 
     }
 
+
     private void requestCallScreeningRole() {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -184,12 +186,8 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
                 }
             }
         } else {
-            // Not supported or null
+            Log.d("TAG", "Android version below Q, skipping role request");
             checkOverlayPermission();
-
-           /* AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
-            startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
-            finish();*/
         }
     }
 
@@ -202,7 +200,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
             RoleManager roleManager = (RoleManager) getSystemService(Context.ROLE_SERVICE);
 
             if (roleManager != null) {
-                if (!roleManager.isRoleHeld(RoleManager.ROLE_DIALER)) {
+                if (roleManager.isRoleAvailable(RoleManager.ROLE_DIALER) && !roleManager.isRoleHeld(RoleManager.ROLE_DIALER)) {
                     Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER);
                     startActivityForResult(intent, CALL_DIALING_REQUEST_ID);
                 } else {
@@ -217,7 +215,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
             checkOverlayPermission();
 
            /* AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
-            startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+            startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
             finish();*/
         }
     }

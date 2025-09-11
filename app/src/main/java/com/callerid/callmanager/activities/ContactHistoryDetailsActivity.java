@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.database.CallLogEntity;
 import com.callerid.callmanager.database.CallLogRepository;
+import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -53,6 +54,8 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_history_details);
+
+        Utility.setStatusBar(this);
 
         callLogEntity = (CallLogEntity) getIntent().getSerializableExtra("CallLogEntity");
         repository = new CallLogRepository(getApplication());

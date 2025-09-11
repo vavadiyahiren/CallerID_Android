@@ -17,6 +17,8 @@ public class CallReceiver extends BroadcastReceiver {
         if (TelephonyManager.ACTION_PHONE_STATE_CHANGED.equals(action)) {
             String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 
+            Log.e(TAG,"onReceive");
+
             if (TelephonyManager.EXTRA_STATE_IDLE.equals(state)) {
                 // Call ended or no call present
                 Log.d(TAG, "Call disconnected");

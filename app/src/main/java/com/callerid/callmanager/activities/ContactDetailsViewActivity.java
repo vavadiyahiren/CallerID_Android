@@ -1,13 +1,21 @@
 package com.callerid.callmanager.activities;
 
+import static com.callerid.callmanager.utilities.Constant.getColorForCardView;
+import static com.callerid.callmanager.utilities.Constant.getColorForName;
+import static com.callerid.callmanager.utilities.Utility.getContactImageByContactId;
+
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +27,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.CallLogHistoryAdapter;
 import com.callerid.callmanager.adapters.PhoneAdapter;
@@ -33,6 +41,7 @@ import com.callerid.callmanager.database.CallLogRepository;
 import com.callerid.callmanager.database.CallLogViewModel;
 import com.callerid.callmanager.database.ContactEntity;
 import com.callerid.callmanager.database.ContactViewModel;
+import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -62,6 +71,9 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
     RecyclerView rvPhoneList, rrRecentCalls;
 
+    CardView cvContactBg;
+    AppCompatTextView txtFirstName;
+
     CallLogEntity callLogEntity;
     CallLogRepository repository;
     ContactEntity contactEntity;
@@ -79,6 +91,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_details_view);
+
+        Utility.setStatusBar(this);
 
         callLogEntity = (CallLogEntity) getIntent().getSerializableExtra("CallLogEntity");
         FromContact = getIntent().getBooleanExtra("FromContact", false);
@@ -100,12 +114,15 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         txtEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (callLogEntity.contactId != null)
+                    editContact(Long.parseLong(callLogEntity.contactId));
             }
         });
         txtViewAll = findViewById(R.id.txtViewAll);
         txtName = findViewById(R.id.txtName);
         imgUser = findViewById(R.id.imgUser);
+        cvContactBg = findViewById(R.id.cvContactBg);
+        txtFirstName = findViewById(R.id.txtFirstName);
         imgBlock = findViewById(R.id.imgBlock);
         llWA = findViewById(R.id.llWA);
         llMeet = findViewById(R.id.llMeet);
@@ -153,15 +170,30 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                     else
                         imgFavourite.setImageResource(R.drawable.star);
 
-                    if (!callLogEntity.getPhoto().isEmpty()) {
-                        //holder.imgCallType.setImageURI(Uri.parse(model.getPhoto()));
 
-                        Glide.with(getApplicationContext())
-                                .load(Uri.parse(callLogEntity.getPhoto()))
-                                .placeholder(R.drawable.circle_background_white_10)
-                                .error(R.drawable.profile_demo)
-                                .into(imgUser);
+                    // Load contact image
+                    Bitmap bitmap = getContactImageByContactId(getApplicationContext(), contactEntity.getContactId());
+                    if (bitmap != null) {
+                        imgUser.setVisibility(View.VISIBLE);
+                        cvContactBg.setVisibility(View.GONE);
+                        imgUser.setImageBitmap(bitmap);
+                    } else {
+                        String name = contactEntity.getName() != null ? contactEntity.getName() : "";
+
+                        // Get current contact's initial
+                        String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
+
+                        txtFirstName.setText(currentInitial);
+
+                        int color = getColorForCardView(name);
+                        int colorText = getColorForName(name);
+                        cvContactBg.setCardBackgroundColor(color);
+                        txtFirstName.setTextColor(colorText);
+
+                        imgUser.setVisibility(View.GONE);
+                        cvContactBg.setVisibility(View.VISIBLE);
                     }
+
 
                     PhoneAdapter adapter = new PhoneAdapter(this, contactEntity.getPhones());
                     rvPhoneList.setLayoutManager(new LinearLayoutManager(this));
@@ -178,7 +210,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
 
                         executor.execute(() -> {
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList,4L);
+                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 4L);
                             callLogsLess.clear();
                             callLogsLess.addAll(callLogEntityList);
 
@@ -239,7 +271,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
                         ExecutorService executorAll = Executors.newSingleThreadExecutor();
                         executorAll.execute(() -> {
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList,10000000L);
+                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 10000000L);
                             callLogsAll.clear();
                             callLogsAll.addAll(callLogEntityList);
 
@@ -253,7 +285,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                         ExecutorService executor = Executors.newSingleThreadExecutor();
                         executor.execute(() -> {
 
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number,4L);
+                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number, 4L);
                             callLogsLess.clear();
                             callLogsLess.addAll(callLogEntityList);
 
@@ -315,7 +347,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
                         ExecutorService executorAll = Executors.newSingleThreadExecutor();
                         executorAll.execute(() -> {
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number,10000000L);
+                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number, 10000000L);
                             callLogsAll.clear();
                             callLogsAll.addAll(callLogEntityList);
 
@@ -332,10 +364,26 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 llFavourite.setVisibility(View.GONE);
 
 
+                String name = callLogEntity.getName() != null ? callLogEntity.getName() : "";
+
+                // Get current contact's initial
+                String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
+
+                txtFirstName.setText(currentInitial);
+
+                int color = getColorForCardView(name);
+                int colorText = getColorForName(name);
+                cvContactBg.setCardBackgroundColor(color);
+                txtFirstName.setTextColor(colorText);
+
+                imgUser.setVisibility(View.GONE);
+                cvContactBg.setVisibility(View.VISIBLE);
+
+
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 executor.execute(() -> {
 
-                    List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number,4L);
+                    List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number, 4L);
 
                     callLogsLess.clear();
                     callLogsLess.addAll(callLogEntityList);
@@ -399,7 +447,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
                 ExecutorService executorAll = Executors.newSingleThreadExecutor();
                 executorAll.execute(() -> {
-                    List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number,10000000L);
+                    List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactNew(callLogEntity.number, 10000000L);
                     callLogsAll.clear();
                     callLogsAll.addAll(callLogEntityList);
 
@@ -783,6 +831,13 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 contactViewModel.updateContact(contactEntity);
             }
         });
+        llShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (contactEntity != null)
+                    shareContactInfo(contactEntity.displayName, contactEntity.normalizedNumber);
+            }
+        });
 
         txtViewAll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1082,6 +1137,40 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         }
 
         return stats;
+    }
+
+    public void shareContactInfo(String name, String phoneNumber) {
+        String contactInfo = "Name: " + name + "\nPhone: " + phoneNumber;
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, contactInfo);
+        startActivity(Intent.createChooser(intent, "Share Contact via"));
+    }
+
+    public void editContact(long contactId) {
+
+        Log.e("ContactEdit", "Contact ID: " + contactId);
+
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setData(contactUri);
+        intent.putExtra("finishActivityOnSaveCompleted", true);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "No app found to edit contact", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void shareContact(Context context, long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_VCARD_URI, contactId);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/x-vcard");
+        intent.putExtra(Intent.EXTRA_STREAM, contactUri);
+        context.startActivity(Intent.createChooser(intent, "Share Contact via"));
     }
 
     public static class CallStats {

@@ -135,7 +135,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
 
         if (position == expandedPosition) {
             holder.llBottomMenu.setVisibility(View.VISIBLE);
-            holder.llMain.setBackgroundColor(ContextCompat.getColor(context,R.color.bg_color));
+            holder.llMain.setBackgroundColor(ContextCompat.getColor(context,R.color.bg_color_call_log));
         } else {
             holder.llBottomMenu.setVisibility(View.GONE);
             holder.llMain.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
@@ -252,6 +252,11 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
     @Override
     public int getItemCount() {
         return callLogList.size();
+    }
+
+    public void filterList(List<CallLogEntity> callLogs) {
+        callLogList = callLogs;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

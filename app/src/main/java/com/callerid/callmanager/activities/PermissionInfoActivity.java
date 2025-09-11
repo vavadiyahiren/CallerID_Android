@@ -9,6 +9,7 @@ import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -55,15 +56,28 @@ public class PermissionInfoActivity extends AppCompatActivity implements Permiss
     }
 
     private void requestAllPermissions() {
-        Dexter.withContext(this)
-                .withPermissions(
-                        Manifest.permission.READ_CALL_LOG,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.WRITE_CONTACTS,
-                        Manifest.permission.CALL_PHONE,
-                        Manifest.permission.ANSWER_PHONE_CALLS
 
-                )
+        String[] myPermissions = new String[]{
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.ANSWER_PHONE_CALLS,
+                Manifest.permission.READ_PHONE_STATE
+        };
+        if (Build.VERSION.SDK_INT >= 33) {
+            myPermissions = new String[]{
+                    Manifest.permission.READ_CALL_LOG,
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.WRITE_CONTACTS,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.ANSWER_PHONE_CALLS,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.POST_NOTIFICATIONS};
+        }
+
+        Dexter.withContext(this)
+                .withPermissions(myPermissions)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {

@@ -10,7 +10,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:padding="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_6sdp"
-        android:background="@drawable/edit_text_background_new">
+        android:background="@drawable/edit_text_background_new_language">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/cbLanguage"

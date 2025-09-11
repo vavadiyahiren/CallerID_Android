@@ -79,7 +79,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:includeFontPadding="false"
                     android:text="9913178118"
-                    android:textColor="@color/black_light_new"
+                    android:textColor="@color/_6b6c6d"
                     android:textSize="@dimen/_11sdp" />
 
 
@@ -103,7 +103,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:includeFontPadding="false"
                 android:text="10-08-2025"
-                android:textColor="#6B6C6D"
+                android:textColor="@color/_6b6c6d"
                 android:textSize="@dimen/_9sdp" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -136,7 +136,7 @@
             android:layout_marginVertical="@dimen/_4sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@color/border_new" />
+            android:background="@color/line" />
 
 
         <LinearLayout

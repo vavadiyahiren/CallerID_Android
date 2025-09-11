@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".fragments.SettingFragment">
 
     <LinearLayout
@@ -19,9 +20,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="1"
-            tools:listitem="@layout/contact_search_item"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:paddingTop="@dimen/_10sdp"
+            tools:listitem="@layout/contact_search_item" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/poppins_medium"
+            android:includeFontPadding="false"
+            android:text="2+ more..."
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone"
+            android:textColor="@color/purple_keypad"
+            android:textSize="@dimen/_12sdp" />
 
     </LinearLayout>
 
@@ -56,6 +71,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text=""
+                android:textColor="@color/black"
                 android:textCursorDrawable="@drawable/custom_edit_text_cursor"
                 android:textSize="@dimen/_29sdp" />
 
@@ -138,7 +154,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="A B C"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -171,7 +187,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="D E F"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -211,7 +227,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="G H I"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -246,7 +262,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="J K L"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -279,7 +295,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="M N O"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -319,7 +335,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="P Q R S"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -354,7 +370,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="T U V"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -387,7 +403,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="W X Y Z"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -452,7 +468,7 @@
                     android:gravity="center"
                     android:paddingBottom="@dimen/_5sdp"
                     android:text="+"
-                    android:textColor="@color/black_light"
+                    android:textColor="@color/black_light_keypad"
                     android:textSize="@dimen/_10sdp" />
 
 

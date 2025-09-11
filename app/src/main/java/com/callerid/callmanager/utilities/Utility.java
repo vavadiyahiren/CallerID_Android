@@ -3,6 +3,7 @@ package com.callerid.callmanager.utilities;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
+import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
@@ -24,6 +26,19 @@ import java.io.InputStream;
 
 public class Utility {
 
+    public static void setStatusBar(Activity activity){
+
+        View decor = activity.getWindow().getDecorView();
+        boolean isDark = AppPref.getBooleanPref(activity, Constant.THEME_MODE, false);
+        if (isDark) {
+            // Clear the flag → Light icons for dark background
+            decor.setSystemUiVisibility(0);
+        } else {
+            // Set light status bar → Dark icons for light background
+            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+    }
     public static void shareApp(Context context){
         try {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);

@@ -5,31 +5,33 @@ import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
 import android.telephony.PhoneNumberUtils;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,19 +43,17 @@ import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.CallLogAdapter;
 import com.callerid.callmanager.database.CallLogEntity;
 import com.callerid.callmanager.database.CallLogViewModel;
+import com.callerid.callmanager.database.ContactEntity;
+import com.callerid.callmanager.database.ContactViewModel;
+import com.callerid.callmanager.database.Phone;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -62,15 +62,25 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HomeFragment extends Fragment {
 
     public AppCompatImageView imgSearch, imgMore;
-    public LinearLayoutCompat llFavourite, llRecentCalls, llEmpty,llToolbar;
+    public LinearLayoutCompat llFavourite, llRecentCalls, llEmpty, llToolbar;
+    LinearLayout llToolbarSearch;
+    RelativeLayout rrToolbar;
+    AppCompatEditText edSearch;
     RecyclerView rvRecentCalls;
     CallLogViewModel callLogViewModel;
     Map<String, String> contactMap = new HashMap<>();
+    CallLogAdapter callLogAdapter;
+    ContactViewModel contactViewModel;
+    private AppCompatImageView imgClose, imgBack;
     private AppCompatTextView txtClearAll, txtRecentCallType;
+    private List<CallLogEntity> callLogs = new ArrayList<>();
+    private List<CallLogEntity> filteredList = new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -97,7 +107,15 @@ public class HomeFragment extends Fragment {
 
         //loadContactsMap();
         callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
+        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
+        rrToolbar = view.findViewById(R.id.rrToolbar);
+        llToolbarSearch = view.findViewById(R.id.llToolbarSearch);
+        imgBack = view.findViewById(R.id.imgBack);
+        edSearch = view.findViewById(R.id.edSearch);
+
+        imgSearch = view.findViewById(R.id.imgSearch);
+        imgClose = view.findViewById(R.id.imgClose);
 
         llToolbar = view.findViewById(R.id.llToolbar);
         imgSearch = view.findViewById(R.id.imgSearch);
@@ -109,6 +127,9 @@ public class HomeFragment extends Fragment {
         txtRecentCallType = view.findViewById(R.id.txtRecentCallType);
 
         rvRecentCalls = view.findViewById(R.id.rvRecentCalls);
+        rvRecentCalls.setLayoutManager(new LinearLayoutManager(getActivity()));
+        callLogAdapter = new CallLogAdapter(getActivity(), callLogs);
+        rvRecentCalls.setAdapter(callLogAdapter);
 
         //llFavourite.setVisibility(View.GONE);
         llRecentCalls.setVisibility(View.GONE);
@@ -120,6 +141,79 @@ public class HomeFragment extends Fragment {
                 showDeleteAllUserDialog();
             }
         });
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                edSearch.setText("");
+
+                InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null && edSearch != null) {
+                    imm.hideSoftInputFromWindow(edSearch.getWindowToken(), 0);
+                    edSearch.clearFocus(); // Remove focus from EditText
+                }
+
+                llToolbarSearch.setVisibility(View.GONE);
+                rrToolbar.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        imgSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                llToolbarSearch.setVisibility(View.VISIBLE);
+                rrToolbar.setVisibility(View.GONE);
+                edSearch.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edSearch, InputMethodManager.SHOW_IMPLICIT);
+            }
+
+        });
+
+
+        edSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                String filterPattern = editable.toString().trim();
+
+                if (filterPattern.isEmpty()) {
+                    callLogAdapter.filterList(callLogs);
+                    return;
+                }
+
+                filteredList = new ArrayList<>();
+                for (CallLogEntity contact : callLogs) {
+                    if (contact.getName().toLowerCase().contains(filterPattern.toLowerCase()) ||
+                            contact.getNumber().contains(filterPattern.toLowerCase())) {
+                        filteredList.add(contact);
+                    }
+                }
+                callLogAdapter.filterList(filteredList);
+            }
+        });
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edSearch.requestFocus();
+                edSearch.setText("");
+                edSearch.clearFocus();
+            }
+        });
+
 
         /*imgMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,14 +350,28 @@ public class HomeFragment extends Fragment {
 
     private void fetchCallLogsPermission() {
 
-        Dexter.withContext(requireContext())
-                .withPermissions(
-                        Manifest.permission.READ_CALL_LOG,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.WRITE_CONTACTS,
-                        Manifest.permission.CALL_PHONE
-                        // Add more permissions as needed
-                )
+        String[] myPermissions = new String[]{
+                Manifest.permission.READ_CALL_LOG,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.WRITE_CONTACTS,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.ANSWER_PHONE_CALLS,
+                Manifest.permission.READ_PHONE_STATE
+        };
+        if (Build.VERSION.SDK_INT >= 33) {
+            myPermissions = new String[]{
+                    Manifest.permission.READ_CALL_LOG,
+                    Manifest.permission.READ_CONTACTS,
+                    Manifest.permission.WRITE_CONTACTS,
+                    Manifest.permission.CALL_PHONE,
+                    Manifest.permission.ANSWER_PHONE_CALLS,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.POST_NOTIFICATIONS};
+        }
+
+
+        Dexter.withContext(requireActivity())
+                .withPermissions(myPermissions)
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
@@ -272,7 +380,7 @@ public class HomeFragment extends Fragment {
                         }
 
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                           // Toast.makeText(getActivity(), "Some permissions permanently denied", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(getActivity(), "Some permissions permanently denied", Toast.LENGTH_SHORT).show();
                             // Optionally open app settings
                         }
                     }
@@ -410,6 +518,7 @@ public class HomeFragment extends Fragment {
             // Bulk insert to Room
             callLogViewModel.insertAll(callLogList);
             Log.e("callLogList.size()", "new insert callLogList.size():" + callLogList.size());
+            fetchAndStoreContacts();
         }).start();
     }
 
@@ -421,7 +530,8 @@ public class HomeFragment extends Fragment {
     /**
      * Fast contact ID lookup using pre-loaded phone number map
      */
-    private String getContactIdFast(String phoneNumber, Map<String, String> phoneToContactIdMap) {
+    private String getContactIdFast(String
+                                            phoneNumber, Map<String, String> phoneToContactIdMap) {
         if (phoneNumber == null) return "";
 
         // Try exact match first
@@ -642,6 +752,11 @@ public class HomeFragment extends Fragment {
     private void fetchCallLogs(int callingType) {
 
         callLogViewModel.getCallLogsByType(callingType).observe(getViewLifecycleOwner(), callLogs -> {
+
+            this.callLogs.clear();
+            this.callLogs.addAll(callLogs);
+            callLogAdapter.filterList(this.callLogs);
+
             if (callLogs != null && !callLogs.isEmpty()) {
                 llRecentCalls.setVisibility(View.VISIBLE);
                 llEmpty.setVisibility(View.GONE);
@@ -650,8 +765,6 @@ public class HomeFragment extends Fragment {
                 llEmpty.setVisibility(View.VISIBLE);
             }
 
-            rvRecentCalls.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvRecentCalls.setAdapter(new CallLogAdapter(getActivity(), callLogs));
         });
 
 
@@ -660,6 +773,12 @@ public class HomeFragment extends Fragment {
     private void fetchCallLogs() {
 
         callLogViewModel.getAllCallLogs().observe(getViewLifecycleOwner(), callLogs -> {
+
+            this.callLogs.clear();
+            this.callLogs.addAll(callLogs);
+            callLogAdapter.filterList(this.callLogs);
+
+
             if (callLogs != null && !callLogs.isEmpty()) {
                 llRecentCalls.setVisibility(View.VISIBLE);
                 llEmpty.setVisibility(View.GONE);
@@ -668,8 +787,7 @@ public class HomeFragment extends Fragment {
                 llEmpty.setVisibility(View.VISIBLE);
             }
 
-            rvRecentCalls.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvRecentCalls.setAdapter(new CallLogAdapter(getActivity(), callLogs));
+
         });
 
 
@@ -787,5 +905,121 @@ public class HomeFragment extends Fragment {
         dialogBio.show();
     }
 
+    private void fetchAndStoreContacts() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            List<ContactEntity> contactList = new ArrayList<>();
+            Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+            String[] projection = new String[]{
+                    ContactsContract.CommonDataKinds.Phone._ID,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER,
+                    ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
+                    ContactsContract.CommonDataKinds.Phone.TYPE,
+                    ContactsContract.CommonDataKinds.Phone.LABEL,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+            };
+
+            long lastSavedDate = 0;
+            Cursor cursor;
+
+            long lastSyncTime = AppPref.getLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, 0);
+            if (lastSyncTime == 0) {
+                lastSyncTime = System.currentTimeMillis();
+                AppPref.setLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, lastSyncTime);
+
+                cursor = getActivity().getContentResolver().query(uri, projection, null, null,
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+            } else {
+                //lastSavedDate = callLogViewModel.getLastSavedCallDate();
+                lastSavedDate = AppPref.getLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, 0);
+                lastSyncTime = System.currentTimeMillis();
+                AppPref.setLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, lastSyncTime);
+
+                String selection = null;
+                String[] selectionArgs = null;
+
+                selection = ContactsContract.CommonDataKinds.Phone.CONTACT_LAST_UPDATED_TIMESTAMP + " > ?";
+                selectionArgs = new String[]{String.valueOf(lastSavedDate)};
+
+
+                cursor = getActivity().getContentResolver().query(uri, projection, selection,
+                        selectionArgs, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+            }
+
+
+            if (cursor != null) {
+                Map<String, ContactEntity> contactMap = new HashMap<>(); // To avoid duplicates by contactId
+
+                while (cursor.moveToNext()) {
+                    String contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                    String displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String normalizedNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
+                    int type = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE));
+                    String label = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.LABEL));
+
+                    // Create phone object
+                    Phone phone = new Phone();
+                    phone.number = number;
+                    phone.normalizedNumber = normalizedNumber != null ? normalizedNumber : number;
+                    phone.type = type;
+                    phone.label = label != null ? label : "";
+
+                    ContactEntity contact = contactMap.get(contactId);
+                    if (contact == null) {
+                        contact = new ContactEntity();
+                        contact.contactId = contactId;
+                        contact.displayName = displayName;
+                        contact.isFavourite = false; // default value, set as needed
+                        contact.isSaved = true;
+                        contact.isBlocked = false;
+                        contact.spam = false;
+                        contact.phones = new ArrayList<>();
+                        contact.photo = null;
+                        contact.address = "";
+                        contact.callType = "";
+                        contact.oprator = "";
+                        contact.favoritesIndex = "";
+                        contact.callTime = "";
+                        contact.normalizedNumber = phone.normalizedNumber;
+
+                        // Fetch accounts for this contactId
+                        // contact.accounts = getAccountsForContact(contactId);
+
+                        contactMap.put(contactId, contact);
+                    }
+
+                    // Add phone if not duplicate
+                    boolean phoneExists = false;
+                    for (Phone p : contact.phones) {
+                        if (p.number.equals(phone.number)) {
+                            phoneExists = true;
+                            break;
+                        }
+                    }
+                    if (!phoneExists) {
+                        contact.phones.add(phone);
+                    }
+                }
+                cursor.close();
+
+                contactList.addAll(contactMap.values());
+
+
+                contactViewModel.insertAll(contactList);
+
+                handler.post(() -> {
+
+
+                });
+            }
+        });
+    }
 
 }

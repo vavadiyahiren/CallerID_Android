@@ -126,6 +126,7 @@ public class ContactsFragment extends Fragment {
         imgAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // Launch the intent
                 Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
                 intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
@@ -139,6 +140,8 @@ public class ContactsFragment extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                edSearch.setText("");
 
                 InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null && edSearch != null) {
@@ -161,8 +164,6 @@ public class ContactsFragment extends Fragment {
                 imm.showSoftInput(edSearch, InputMethodManager.SHOW_IMPLICIT);
             }
         });
-
-
 
         fetchContactsPermission();
 
@@ -193,7 +194,7 @@ public class ContactsFragment extends Fragment {
 //                recyclerView.setPreviewPadding(20);
 //
             rvContactAlphabet.setPreviewVisibility(true);
-            rvContactAlphabet.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.poppins_semibold));
+            rvContactAlphabet.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.poppins_semibold));
 
         });
 
@@ -219,7 +220,7 @@ public class ContactsFragment extends Fragment {
                 }
                 contactAdapter.filterList(filteredList);*/
 
-                String  filterPattern=editable.toString().trim();
+                String filterPattern = editable.toString().trim();
 
                 if(filterPattern.isEmpty()){
                     contactAdapter.filterList(contactList);
@@ -233,10 +234,9 @@ public class ContactsFragment extends Fragment {
                             try {
                                 match = contact.getName().toLowerCase().contains(filterPattern);
 
-
                             }catch (Exception e){
-                            }
 
+                            }
                             boolean messageMatch = false;
                             try {
                                 messageMatch = contact.getPhones() != null &&
@@ -245,8 +245,8 @@ public class ContactsFragment extends Fragment {
                                         );
 
                             }catch (Exception e){
-                            }
 
+                            }
                             return match || messageMatch;
                         })
                         .collect(Collectors.toList());
@@ -272,7 +272,7 @@ public class ContactsFragment extends Fragment {
 
     private void fetchContactsPermission() {
 
-        Dexter.withContext(requireContext())
+        Dexter.withContext(requireActivity())
                 .withPermissions(
                         Manifest.permission.READ_CONTACTS,
                         Manifest.permission.WRITE_CONTACTS
@@ -304,7 +304,7 @@ public class ContactsFragment extends Fragment {
     public void showBlockUserDialog() {
 
         Dialog dialogBio;
-        dialogBio = new Dialog(getActivity(), R.style.MyDialogTheme);
+        dialogBio = new Dialog(requireActivity(), R.style.MyDialogTheme);
         View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_block_user, null);
         dialogBio.setContentView(inflate);
         Objects.requireNonNull(dialogBio.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -437,13 +437,10 @@ public class ContactsFragment extends Fragment {
 
                 contactList.addAll(contactMap.values());
 
-
                 contactViewModel.insertAll(contactList);
 
                 handler.post(() -> {
-
                     progreees_loader.setVisibility(View.GONE);
-
                 });
             }
         });

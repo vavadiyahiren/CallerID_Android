@@ -31,6 +31,7 @@ import com.callerid.callmanager.fragments.KeypadFragment;
 import com.callerid.callmanager.fragments.SettingFragment;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
+import com.callerid.callmanager.utilities.Utility;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -45,8 +46,8 @@ public class DashboardActivity extends AppCompatActivity {
     private static final String TAG = "DashboardActivity";
 
     LinearLayoutCompat llBottomMenu, llHome, llContacts, llKeypad, llBlocking, llProfile;
-    AppCompatImageView imgHomeLine, imgHome, imgContactsLine, imgContacts, imgBlockingLine, imgBlocking, imgProfileLine, imgProfile,imgKeypad,imgKeypadLine;
-    AppCompatTextView txtHome, txtContacts, txtBlocking, txtProfile,txtKeypad;
+    AppCompatImageView imgHomeLine, imgHome, imgContactsLine, imgContacts, imgBlockingLine, imgBlocking, imgProfileLine, imgProfile, imgKeypad, imgKeypadLine;
+    AppCompatTextView txtHome, txtContacts, txtBlocking, txtProfile, txtKeypad;
     FragmentContainerView fragment_container_view;
 
     private ContactViewModel contactViewModel;
@@ -56,9 +57,12 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        Utility.setStatusBar(this);
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
         initView();
+
+
     }
 
     void initView() {
@@ -100,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity {
             setBottomMenu(view);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view, ContactsFragment.newInstance()).commit();
         });
-       // llKeypad.setOnClickListener(this::setBottomMenu);
+        // llKeypad.setOnClickListener(this::setBottomMenu);
         llKeypad.setOnClickListener(view -> {
             setBottomMenu(view);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view, KeypadFragment.newInstance()).commit();
@@ -111,6 +115,7 @@ public class DashboardActivity extends AppCompatActivity {
             setBottomMenu(view);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view, SettingFragment.newInstance()).commit();
         });
+
 
         llHome.performClick();
     }
@@ -131,7 +136,7 @@ public class DashboardActivity extends AppCompatActivity {
             imgProfile.setImageResource(R.drawable.ic_profile_unselect);
             imgKeypad.setImageResource(R.drawable.ic_keypad_unselected);
 
-            txtHome.setTextColor(getColor(R.color.purple));
+            txtHome.setTextColor(getColor(R.color.purple_keypad));
             txtContacts.setTextColor(getColor(R.color.gray1));
             txtBlocking.setTextColor(getColor(R.color.gray1));
             txtProfile.setTextColor(getColor(R.color.gray1));
@@ -151,7 +156,7 @@ public class DashboardActivity extends AppCompatActivity {
             imgKeypad.setImageResource(R.drawable.ic_keypad_unselected);
 
             txtHome.setTextColor(getColor(R.color.gray));
-            txtContacts.setTextColor(getColor(R.color.purple));
+            txtContacts.setTextColor(getColor(R.color.purple_keypad));
             txtBlocking.setTextColor(getColor(R.color.gray1));
             txtProfile.setTextColor(getColor(R.color.gray1));
             txtKeypad.setTextColor(getColor(R.color.gray1));
@@ -171,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             txtHome.setTextColor(getColor(R.color.gray1));
             txtContacts.setTextColor(getColor(R.color.gray1));
-            txtBlocking.setTextColor(getColor(R.color.purple));
+            txtBlocking.setTextColor(getColor(R.color.purple_keypad));
             txtProfile.setTextColor(getColor(R.color.gray1));
             txtKeypad.setTextColor(getColor(R.color.gray1));
         } else if (view.getId() == R.id.llProfile) {
@@ -191,7 +196,7 @@ public class DashboardActivity extends AppCompatActivity {
             txtHome.setTextColor(getColor(R.color.gray1));
             txtContacts.setTextColor(getColor(R.color.gray1));
             txtBlocking.setTextColor(getColor(R.color.gray1));
-            txtProfile.setTextColor(getColor(R.color.purple));
+            txtProfile.setTextColor(getColor(R.color.purple_keypad));
             txtKeypad.setTextColor(getColor(R.color.gray1));
 
         } else if (view.getId() == R.id.llKeypad) {
@@ -212,7 +217,7 @@ public class DashboardActivity extends AppCompatActivity {
             txtContacts.setTextColor(getColor(R.color.gray));
             txtBlocking.setTextColor(getColor(R.color.gray));
             txtProfile.setTextColor(getColor(R.color.gray));
-            txtKeypad.setTextColor(getColor(R.color.purple));
+            txtKeypad.setTextColor(getColor(R.color.purple_keypad));
 
             //showKeypadDialog();
         }
