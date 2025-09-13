@@ -39,7 +39,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
     public void onBindViewHolder(@NonNull PhoneViewHolder holder, int position) {
 
         Phone phone = phoneList.get(position);
-        holder.txtMobileType.setText(getTypeLabel(phone.type,"Main"));
+        holder.txtMobileType.setText(getTypeLabel(phone.type, "Main"));
         holder.txtMobile.setText("" + phone.number);
 
         // Copy icon click
@@ -49,6 +49,12 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
             clipboard.setPrimaryClip(clip);
             Toast.makeText(context, "Copied: " + phone.number, Toast.LENGTH_SHORT).show();
         });
+
+        if (position == phoneList.size() - 1) {
+            holder.line.setVisibility(View.GONE);
+        } else {
+            holder.line.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -82,12 +88,14 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
     public static class PhoneViewHolder extends RecyclerView.ViewHolder {
         AppCompatTextView txtMobileType, txtMobile;
         AppCompatImageView imgCopy;
+        View line;
 
         public PhoneViewHolder(@NonNull View itemView) {
             super(itemView);
             txtMobileType = itemView.findViewById(R.id.txtMobileType);
             txtMobile = itemView.findViewById(R.id.txtMobile);
             imgCopy = itemView.findViewById(R.id.imgCopy);
+            line = itemView.findViewById(R.id.line);
         }
     }
 }

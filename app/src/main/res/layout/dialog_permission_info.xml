@@ -7,10 +7,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_box"
-        android:backgroundTint="@color/background"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_35sdp"
+        android:background="@drawable/rounded_box"
+        android:backgroundTint="@color/background"
         android:padding="20dp">
 
 
@@ -18,8 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/txtContinue"
-            android:overScrollMode="never"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/permission_amp_your_data"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_16sdp"
+                    android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
                 <!-- Phone Calls Section -->
@@ -45,42 +45,53 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/rounded_box"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="Phone icon"
-                        android:src="@drawable/ic_phone" />
-
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:includeFontPadding="false"
-                            android:text="@string/phone_calls"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Phone icon"
+                            android:src="@drawable/ic_phone" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_regular"
-                            android:includeFontPadding="false"
-                            android:text="@string/to_verify_your_phone_number_and_provide_helpful_features_like"
-                            android:textColor="#4A4A4A"
-                            android:textSize="@dimen/_11sdp" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/phone_calls"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:includeFontPadding="false"
+                        android:text="@string/to_verify_your_phone_number_and_provide_helpful_features_like"
+                        android:textColor="@color/_4a4a4a"
+                        android:textSize="@dimen/_10sdp" />
+
                 </LinearLayout>
 
                 <!-- Contacts Section -->
@@ -89,96 +100,117 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/rounded_box"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="Contacts icon"
-                        android:src="@drawable/ic_contacts" />
-
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:includeFontPadding="false"
-                            android:text="@string/contacts"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Contacts icon"
+                            android:src="@drawable/ic_contacts" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_regular"
-                            android:includeFontPadding="false"
-                            android:text="@string/to_show_you_when_a_contact_is_calling_you_and_help_identify_unknown"
-                            android:textColor="#4A4A4A"
-                            android:textSize="@dimen/_11sdp" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/poppins_semibold"
-                            android:includeFontPadding="false"
-                            android:text="@string/your_contacts_list_stays_on_your_phone_and_is_not_shared_with_caller_id"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_11sdp"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/contacts"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:includeFontPadding="false"
+                        android:text="@string/to_show_you_when_a_contact_is_calling_you_and_help_identify_unknown"
+                        android:textColor="@color/_4a4a4a"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:includeFontPadding="false"
+                        android:text="@string/your_contacts_list_stays_on_your_phone_and_is_not_shared_with_caller_id"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <!-- Call Logs Section -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/rounded_box"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="Call logs icon"
-                        android:src="@drawable/ic_call_logs" />
-
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/poppins_medium"
-                            android:includeFontPadding="false"
-                            android:text="@string/call_logs"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp"
-                            android:textStyle="bold" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Call logs icon"
+                            android:src="@drawable/ic_call_logs" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="@string/to_help_identify_unknown_callers_in_your_call_history_we_collect_call_log_data"
-                            android:textColor="#4A4A4A"
-                            android:textSize="@dimen/_11sdp" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:fontFamily="@font/poppins_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/call_logs"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp"
+                                android:textStyle="bold" />
+
+
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/to_help_identify_unknown_callers_in_your_call_history_we_collect_call_log_data"
+                        android:textColor="@color/_4a4a4a"
+                        android:textSize="@dimen/_10sdp" />
+
                 </LinearLayout>
 
                 <!-- Control Info -->
@@ -199,8 +231,8 @@
                     android:fontFamily="@font/poppins_regular"
                     android:includeFontPadding="false"
                     android:text="@string/you_have_full_control_over_all_permissions_and_can_"
-                    android:textColor="#4A4A4A"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textColor="@color/_4a4a4a"
+                    android:textSize="@dimen/_10sdp" />
 
 
             </LinearLayout>
@@ -223,7 +255,7 @@
             android:padding="12dp"
             android:text="@string/continue_"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/white_og"
             android:textSize="@dimen/_14sdp" />
 
     </RelativeLayout>

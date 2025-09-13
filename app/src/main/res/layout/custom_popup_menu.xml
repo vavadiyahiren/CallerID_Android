@@ -4,12 +4,12 @@
     android:id="@+id/layoutPopup"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_popup_rounded"
-    android:orientation="vertical"
-    android:elevation="@dimen/_2sdp"
     android:layout_margin="@dimen/_2sdp"
-    android:paddingVertical="8dp"
-    android:paddingHorizontal="10dp">
+    android:background="@drawable/bg_popup_rounded"
+    android:elevation="@dimen/_2sdp"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="6dp">
 
     <!-- All Calls -->
     <LinearLayout
@@ -19,14 +19,15 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/all_call"
-            app:tint="@color/purple"
-            android:src="@drawable/call_calling" />
+            android:src="@drawable/call_calling"
+            app:tint="@color/purple" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textAllCall"
@@ -37,7 +38,7 @@
             android:includeFontPadding="false"
             android:text="@string/all_call"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
     <View
@@ -54,26 +55,26 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/incoming_call"
             android:padding="2dp"
-            android:src="@drawable/ic_incoming_call"
-            />
+            android:src="@drawable/ic_incoming_call" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textIncomingCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/incoming_call"
             android:fontFamily="@font/poppins_regular"
             android:includeFontPadding="false"
+            android:text="@string/incoming_call"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
     <View
@@ -90,26 +91,26 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:padding="2dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/missed_call"
-            android:src="@drawable/ic_missed_call"
-           />
+            android:padding="2dp"
+            android:src="@drawable/ic_missed_call" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textMissedCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/missed_call"
             android:fontFamily="@font/poppins_regular"
             android:includeFontPadding="false"
+            android:text="@string/missed_call"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"  />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
     <View
@@ -126,26 +127,26 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/outgoing_call"
             android:padding="2dp"
-            android:src="@drawable/ic_outgoing_call"
-            />
+            android:src="@drawable/ic_outgoing_call" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textOutgoingCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/outgoing_call"
             android:fontFamily="@font/poppins_regular"
             android:includeFontPadding="false"
+            android:text="@string/outgoing_call"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"  />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
     <View
@@ -154,7 +155,7 @@
         android:layout_marginStart="8dp"
         android:background="@color/e0e0e0" />
 
- <!-- Spam Calls -->
+    <!-- Spam Calls -->
     <LinearLayout
         android:id="@+id/menuSpamCall"
         android:layout_width="match_parent"
@@ -162,26 +163,26 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/outgoing_call"
             android:padding="2dp"
-            android:src="@drawable/ic_spam_"
-            />
+            android:src="@drawable/ic_spam_" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textSpamCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/spam_call"
             android:fontFamily="@font/poppins_regular"
             android:includeFontPadding="false"
+            android:text="@string/spam_call"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp"  />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
     <View
@@ -198,26 +199,26 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
             android:contentDescription="@string/delete_all_calls"
-            android:src="@drawable/ic_delete"
             android:padding="1dp"
-          />
+            android:src="@drawable/ic_delete" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/textDeleteAllCalls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:text="@string/delete_all_calls"
             android:fontFamily="@font/poppins_regular"
             android:includeFontPadding="false"
+            android:text="@string/delete_all_calls"
             android:textColor="@color/black"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_11sdp" />
     </LinearLayout>
 
 </LinearLayout>

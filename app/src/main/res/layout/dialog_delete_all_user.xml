@@ -68,11 +68,11 @@
                 android:layout_height="@dimen/_36sdp"
                 android:layout_weight="1"
                 android:background="@drawable/background_key"
-                android:backgroundTint="@color/stock"
+                android:backgroundTint="@color/btn_bg"
                 android:fontFamily="@font/sora_medium"
                 android:gravity="center"
                 android:text="Cancel"
-                android:textColor="@color/gray1"
+                android:textColor="@color/gray2"
                 android:textSize="@dimen/_14sdp" />
 
             <View
@@ -90,7 +90,7 @@
                 android:fontFamily="@font/sora_medium"
                 android:gravity="center"
                 android:text="Delete"
-                android:textColor="@color/white"
+                android:textColor="@color/white_og"
                 android:textSize="@dimen/_14sdp" />
 
 

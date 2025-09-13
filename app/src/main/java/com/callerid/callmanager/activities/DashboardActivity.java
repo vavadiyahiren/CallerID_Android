@@ -124,7 +124,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         if (view.getId() == R.id.llHome) {
 
-            imgHomeLine.setVisibility(View.VISIBLE);
+            imgHomeLine.setVisibility(View.INVISIBLE);
             imgContactsLine.setVisibility(View.INVISIBLE);
             imgBlockingLine.setVisibility(View.INVISIBLE);
             imgProfileLine.setVisibility(View.INVISIBLE);
@@ -144,7 +144,7 @@ public class DashboardActivity extends AppCompatActivity {
         } else if (view.getId() == R.id.llContacts) {
 
             imgHomeLine.setVisibility(View.INVISIBLE);
-            imgContactsLine.setVisibility(View.VISIBLE);
+            imgContactsLine.setVisibility(View.INVISIBLE);
             imgBlockingLine.setVisibility(View.INVISIBLE);
             imgProfileLine.setVisibility(View.INVISIBLE);
             imgKeypadLine.setVisibility(View.INVISIBLE);
@@ -164,7 +164,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             imgHomeLine.setVisibility(View.INVISIBLE);
             imgContactsLine.setVisibility(View.INVISIBLE);
-            imgBlockingLine.setVisibility(View.VISIBLE);
+            imgBlockingLine.setVisibility(View.INVISIBLE);
             imgProfileLine.setVisibility(View.INVISIBLE);
             imgKeypadLine.setVisibility(View.INVISIBLE);
 
@@ -184,7 +184,7 @@ public class DashboardActivity extends AppCompatActivity {
             imgHomeLine.setVisibility(View.INVISIBLE);
             imgContactsLine.setVisibility(View.INVISIBLE);
             imgBlockingLine.setVisibility(View.INVISIBLE);
-            imgProfileLine.setVisibility(View.VISIBLE);
+            imgProfileLine.setVisibility(View.INVISIBLE);
             imgKeypadLine.setVisibility(View.INVISIBLE);
 
             imgHome.setImageResource(R.drawable.ic_home_unselect);
@@ -205,7 +205,7 @@ public class DashboardActivity extends AppCompatActivity {
             imgContactsLine.setVisibility(View.INVISIBLE);
             imgBlockingLine.setVisibility(View.INVISIBLE);
             imgProfileLine.setVisibility(View.INVISIBLE);
-            imgKeypadLine.setVisibility(View.VISIBLE);
+            imgKeypadLine.setVisibility(View.INVISIBLE);
 
             imgHome.setImageResource(R.drawable.ic_home_unselect);
             imgContacts.setImageResource(R.drawable.ic_contacts_unselect);

@@ -120,7 +120,7 @@
                     android:paddingVertical="@dimen/_4sdp"
                     android:text="@string/edit_profile"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/white_og"
                     android:textSize="@dimen/_10sdp" />
 
 
@@ -168,13 +168,13 @@
                             <RelativeLayout
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/profile_bg">
+                                android:layout_gravity="center">
+                               <!-- android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:id="@+id/imgFavourite"
-                                    android:layout_width="@dimen/_23sdp"
-                                    android:layout_height="@dimen/_23sdp"
+                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/star" />
 
@@ -208,12 +208,12 @@
                             <RelativeLayout
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/profile_bg">
+                                android:layout_gravity="center">
+                                <!--android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="@dimen/_23sdp"
-                                    android:layout_height="@dimen/_23sdp"
+                                    android:layout_width="@dimen/_28sdp"
+                                    android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_button_call" />
 
@@ -248,12 +248,12 @@
                             <RelativeLayout
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/profile_bg">
+                                android:layout_gravity="center">
+                               <!-- android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="@dimen/_23sdp"
-                                    android:layout_height="@dimen/_23sdp"
+                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_msg" />
 
@@ -287,12 +287,12 @@
                             <RelativeLayout
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/profile_bg">
+                                android:layout_gravity="center">
+                            <!--    android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="@dimen/_23sdp"
-                                    android:layout_height="@dimen/_23sdp"
+                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_whatsapp" />
 
@@ -326,12 +326,12 @@
                             <RelativeLayout
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/profile_bg">
+                                android:layout_gravity="center">
+                             <!--   android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="@dimen/_23sdp"
-                                    android:layout_height="@dimen/_23sdp"
+                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_google_meet" />
 
@@ -367,7 +367,10 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvPhoneList"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_phone"
+                        />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -394,7 +397,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@color/border" />
+                        android:background="@color/line" />
 
 
                     <androidx.appcompat.widget.LinearLayoutCompat
@@ -463,7 +466,7 @@
                                         android:fontFamily="@font/poppins_regular"
                                         android:includeFontPadding="false"
                                         android:text="(314)"
-                                        android:textColor="@color/setting_text_light"
+                                        android:textColor="@color/_6b6c6d"
                                         android:textSize="@dimen/_9sdp" />
 
 
@@ -602,7 +605,7 @@
                                         android:fontFamily="@font/poppins_regular"
                                         android:includeFontPadding="false"
                                         android:text="(314)"
-                                        android:textColor="@color/setting_text_light"
+                                        android:textColor="@color/_6b6c6d"
                                         android:textSize="@dimen/_9sdp" />
 
 
@@ -859,7 +862,7 @@
                             android:layout_marginVertical="@dimen/_5sdp"
                             android:fontFamily="@font/poppins_regular"
                             android:text="@string/clear_all"
-                            android:textColor="@color/setting_text_light"
+                            android:textColor="@color/_6b6c6d"
                             android:textSize="@dimen/_10sdp"
                             android:visibility="gone" />
 
@@ -868,7 +871,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/border" />
+                        android:background="@color/line" />
 
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -878,6 +881,7 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:overScrollMode="never"
+                        tools:itemCount="3"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/recent_call_history_item" />
 
@@ -892,7 +896,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:text="@string/view_all"
-                        android:textColor="@color/purple"
+                        android:textColor="@color/purple_keypad"
                         android:textSize="@dimen/_10sdp"
                         android:visibility="visible" />
 
@@ -964,6 +968,7 @@
                         app:tint="@color/red" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtBlock"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_regular"

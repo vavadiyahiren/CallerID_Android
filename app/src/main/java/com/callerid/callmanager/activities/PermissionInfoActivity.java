@@ -25,6 +25,7 @@ import com.callerid.callmanager.R;
 import com.callerid.callmanager.fragments.PermissionDeniedDialogFragment;
 import com.callerid.callmanager.interfaces.PermissionDialogListener;
 import com.callerid.callmanager.utilities.AppPref;
+import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -44,6 +45,8 @@ public class PermissionInfoActivity extends AppCompatActivity implements Permiss
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission_info);
+
+        Utility.setStatusBar(this);
 
         txtContinue = findViewById(R.id.txtContinue);
 

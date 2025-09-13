@@ -119,4 +119,5 @@
     <string name="go_to_setting">Go to setting</string>
     <string name="privacy_policy_url">https://sportsmaster.co.in/policy_files/callerID.html</string>
     <string name="spam_call">Spam Calls</string>
+    <string name="unblock_str">Are you sure you want to unblock this number?</string>
 </resources>

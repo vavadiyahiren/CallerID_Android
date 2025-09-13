@@ -24,7 +24,7 @@
                 android:layout_marginStart="@dimen/_3sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:text="Mobile"
-                android:textColor="@color/setting_text_light"
+                android:textColor="@color/_6b6c6d"
                 android:textSize="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -50,9 +50,10 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
+        android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/border" />
+        android:background="@color/line" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

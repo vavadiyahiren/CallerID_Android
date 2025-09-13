@@ -27,6 +27,8 @@ import com.callerid.callmanager.fragments.PermissionDeniedDialogFragment;
 import com.callerid.callmanager.interfaces.PermissionDialogListener;
 import com.callerid.callmanager.models.OnboardingItem;
 import com.callerid.callmanager.utilities.AppPref;
+import com.callerid.callmanager.utilities.Constant;
+import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -46,6 +48,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
     DotsIndicator indicator;
     AppCompatTextView txtTitle, txtAllowPermission;
     List<OnboardingItem> pages = new ArrayList<>();
+    int person1, person2;
 
 
     ActivityResultLauncher<Intent> permissionResultLauncher = registerForActivityResult(
@@ -66,10 +69,21 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
 
+        Utility.setStatusBar(this);
+
         viewPager = findViewById(R.id.onboardingViewPager);
         indicator = findViewById(R.id.dotIndicator);
         txtTitle = findViewById(R.id.txtTitle);
         txtAllowPermission = findViewById(R.id.txtAllowPermission);
+
+        boolean isDark = AppPref.getBooleanPref(this, Constant.THEME_MODE, false);
+        if (isDark) {
+            person1 = R.drawable.onboarding_person_img1_dark;
+            person2 = R.drawable.onboarding_person_img2_dark;
+        } else {
+            person1 = R.drawable.onboarding_person_img1;
+            person2 = R.drawable.onboarding_person_img2;
+        }
 
         pages.add(new OnboardingItem(
                 "Bessie Cooper",
@@ -78,7 +92,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
                 "Caller ID lets you decide before answering",
                 R.drawable.onboarding_bg_1, // replace with your image
                 R.drawable.ic_launcher, // replace with your image
-                R.drawable.onboarding_person_img1, // replace with your image
+                person1, // replace with your image
                 false
         ));
         pages.add(new OnboardingItem(
@@ -88,7 +102,7 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
                 "Caller ID fetch the unknown number information",
                 R.drawable.onboarding_bg_2, // replace with your image
                 R.drawable.ic_spam, // replace with your image
-                R.drawable.onboarding_person_img2, // replace with your image
+                person2, // replace with your image
                 true
         ));
 
@@ -96,8 +110,8 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
             @Override
             public void onClick(View view) {
 
-                requestCallScreeningRole();
-                //requestCallDialingRole();
+                //requestCallScreeningRole();
+                requestCallDialingRole();
 
               /*  Dexter.withContext(getApplicationContext())
                         .withPermissions(

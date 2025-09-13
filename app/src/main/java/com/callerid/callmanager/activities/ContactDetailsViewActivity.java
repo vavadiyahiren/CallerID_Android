@@ -5,16 +5,21 @@ import static com.callerid.callmanager.utilities.Constant.getColorForName;
 import static com.callerid.callmanager.utilities.Utility.getContactImageByContactId;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.BlockedNumberContract;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.telecom.TelecomManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -72,7 +77,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     RecyclerView rvPhoneList, rrRecentCalls;
 
     CardView cvContactBg;
-    AppCompatTextView txtFirstName;
+    AppCompatTextView txtFirstName, txtBlock;
 
     CallLogEntity callLogEntity;
     CallLogRepository repository;
@@ -84,6 +89,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     List<CallLogEntity> callLogsLess = new ArrayList<>();
     CallLogHistoryAdapter callLogHistoryAdapter;
     boolean isMore = false;
+    boolean isBlock = false;
     private ContactViewModel contactViewModel;
     private CallLogViewModel callLogViewModel;
 
@@ -123,6 +129,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         imgUser = findViewById(R.id.imgUser);
         cvContactBg = findViewById(R.id.cvContactBg);
         txtFirstName = findViewById(R.id.txtFirstName);
+        txtBlock = findViewById(R.id.txtBlock);
         imgBlock = findViewById(R.id.imgBlock);
         llWA = findViewById(R.id.llWA);
         llMeet = findViewById(R.id.llMeet);
@@ -164,6 +171,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                     } else {
                         txtName.setText(contactEntity.getNormalizedNumber());
                     }
+
+                    isBlock = contactEntity.isBlocked;
 
                     if (contactEntity.isFavourite)
                         imgFavourite.setImageResource(R.drawable.star_fill);
@@ -811,10 +820,15 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 showDeleteCallPermanentlyDialog();
             }
         });
+        if (isBlock) {
+            txtBlock.setText(R.string.unblock);
+        } else {
+            txtBlock.setText(R.string.block);
+        }
         llBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBlockContactDialog();
+                showBlockContactDialog(isBlock);
             }
         });
         llFavourite.setOnClickListener(new View.OnClickListener() {
@@ -903,6 +917,9 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         AppCompatTextView txtNo = dialogBio.findViewById(R.id.txtNo);
 
         txtYes.setOnClickListener(v -> {
+
+            //deleteContactByPhoneNumber(this,callLogEntity.number);
+
             if (dialogBio.isShowing()) {
                 dialogBio.dismiss();
             }
@@ -916,7 +933,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         dialogBio.show();
     }
 
-    private void showBlockContactDialog() {
+    private void showBlockContactDialog(boolean isBlock) {
 
         Dialog dialogBio;
         dialogBio = new Dialog(this, R.style.MyDialogTheme);
@@ -926,10 +943,23 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         dialogBio.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialogBio.setCancelable(true);
 
+        AppCompatTextView txtTitle = dialogBio.findViewById(R.id.txtTitle);
         AppCompatTextView txtYes = dialogBio.findViewById(R.id.txtUnblock);
         AppCompatTextView txtNo = dialogBio.findViewById(R.id.txtCancel);
 
+        if (isBlock) {
+            txtTitle.setText(R.string.unblock_str);
+            txtYes.setText(R.string.unblock);
+        }
+
         txtYes.setOnClickListener(v -> {
+
+            if (isBlock) {
+                unblockNumber(getApplicationContext(), callLogEntity.number);
+            } else {
+                blockNumber(getApplicationContext(), callLogEntity.number);
+            }
+
             if (dialogBio.isShowing()) {
                 dialogBio.dismiss();
             }
@@ -1148,8 +1178,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "Share Contact via"));
     }
 
+    @SuppressLint("QueryPermissionsNeeded")
     public void editContact(long contactId) {
-
         Log.e("ContactEdit", "Contact ID: " + contactId);
 
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
@@ -1164,6 +1194,24 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         }
     }
 
+ /*   public void editFirstContact() {
+        Cursor cursor = getContentResolver().query(
+                ContactsContract.Contacts.CONTENT_URI,
+                new String[]{ContactsContract.Contacts._ID},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            long contactId = cursor.getLong(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+            cursor.close();
+            editContact( contactId);
+        } else {
+            Toast.makeText(this, "No contacts found to edit", Toast.LENGTH_SHORT).show();
+        }
+    }*/
+
     public void shareContact(Context context, long contactId) {
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_VCARD_URI, contactId);
 
@@ -1171,6 +1219,97 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         intent.setType("text/x-vcard");
         intent.putExtra(Intent.EXTRA_STREAM, contactUri);
         context.startActivity(Intent.createChooser(intent, "Share Contact via"));
+    }
+
+    public boolean blockNumber(Context context, String phoneNumber) {
+
+        if (canUseBlockedNumberApi(context)) {
+
+            if (!BlockedNumberContract.canCurrentUserBlockNumbers(context)) {
+                return false;
+            }
+
+            ContentValues values = new ContentValues();
+            values.put(BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER, phoneNumber);
+
+            Uri uri = context.getContentResolver().insert(BlockedNumberContract.BlockedNumbers.CONTENT_URI, values);
+
+            contactEntity.isBlocked = true;
+            isBlock = true;
+            txtBlock.setText(R.string.unblock);
+
+
+            return uri != null;
+        }
+        return false;
+    }
+
+    public boolean unblockNumber(Context context, String phoneNumber) {
+
+        if (canUseBlockedNumberApi(context)) {
+
+            ContentResolver resolver = context.getContentResolver();
+            Cursor cursor = resolver.query(
+                    BlockedNumberContract.BlockedNumbers.CONTENT_URI,
+                    new String[]{BlockedNumberContract.BlockedNumbers.COLUMN_ID, BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER},
+                    BlockedNumberContract.BlockedNumbers.COLUMN_ORIGINAL_NUMBER + " = ?",
+                    new String[]{phoneNumber},
+                    null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                long id = cursor.getLong(cursor.getColumnIndexOrThrow(BlockedNumberContract.BlockedNumbers.COLUMN_ID));
+                Uri uri = Uri.withAppendedPath(BlockedNumberContract.BlockedNumbers.CONTENT_URI, String.valueOf(id));
+                int rowsDeleted = resolver.delete(uri, null, null);
+                cursor.close();
+
+                contactEntity.isBlocked = false;
+                isBlock = false;
+                txtBlock.setText(R.string.block);
+
+                return rowsDeleted > 0;
+            }
+
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean canUseBlockedNumberApi(Context context) {
+        TelecomManager tm = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        return tm != null && context.getPackageName().equals(tm.getDefaultDialerPackage());
+    }
+    public boolean deleteContactByPhoneNumber(Context context, String phoneNumber) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+
+        Cursor cursor = contentResolver.query(uri, new String[]{ContactsContract.PhoneLookup._ID}, null, null, null);
+
+        if (cursor != null) {
+            try {
+                while (cursor.moveToNext()) {
+                    long contactId = cursor.getLong(cursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+                    Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+
+                    // Delete the contact
+                    int rows = contentResolver.delete(contactUri, null, null);
+
+                    if (rows > 0) {
+                        Log.d("DeleteContact", "Contact deleted successfully.");
+                        return true;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                cursor.close();
+            }
+        }
+
+        Log.d("DeleteContact", "Contact not found or could not be deleted.");
+        return false;
     }
 
     public static class CallStats {
@@ -1183,5 +1322,6 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         public int missedCount = 0;
         public long missedDuration = 0; // Will always be 0
     }
+
 
 }

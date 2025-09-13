@@ -2,6 +2,8 @@ package com.callerid.callmanager.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,7 +37,7 @@ public class SettingFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     AppCompatImageView imgProfileEdit;
-    LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList;
+    LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList,llLanguage;
     AppCompatTextView txtLanguage;
     Switch switchCBN, switchBCNC, switchTheme;
     boolean isFirstTime = true;
@@ -120,8 +123,9 @@ public class SettingFragment extends Fragment {
         llFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), FeedbackActivity.class);
-                startActivity(intent);
+              /*  Intent intent = new Intent(getActivity(), FeedbackActivity.class);
+                startActivity(intent);*/
+                sendFeedbackEmail(requireActivity());
             }
         });
       /*  txtCountry = view.findViewById(R.id.txtCountry);
@@ -132,8 +136,8 @@ public class SettingFragment extends Fragment {
                 editCountryLauncher.launch(intent);
             }
         });*/
-        txtLanguage = view.findViewById(R.id.txtLanguage);
-        txtLanguage.setOnClickListener(new View.OnClickListener() {
+        llLanguage = view.findViewById(R.id.llLanguage);
+        llLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), LanguageActivity.class);
@@ -224,6 +228,20 @@ public class SettingFragment extends Fragment {
         isFirstTime = false;
 
         return view;
+    }
+
+    public void sendFeedbackEmail(Context context) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822"); // MIME type for email
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"support@example.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "App Feedback");
+        intent.putExtra(Intent.EXTRA_TEXT, "Dear Team,\n\nI would like to share the following feedback:\n");
+
+        try {
+            context.startActivity(Intent.createChooser(intent, "Send Email"));
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No email client found. Please install an email app.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void showLogoutDialog() {

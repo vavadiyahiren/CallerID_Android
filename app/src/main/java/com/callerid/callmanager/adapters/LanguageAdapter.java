@@ -35,7 +35,7 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
     @Override
     public void onBindViewHolder(@NonNull LanguageViewHolder holder, int position) {
         LanguageModel language = languageList.get(position);
-        holder.cbLanguage.setText(" "+language.getEnglishName() + " (" + language.getLocalizedName() + ")");
+        holder.txtLanguage.setText(" "+language.getEnglishName() + " (" + language.getLocalizedName() + ")");
         holder.cbLanguage.setChecked(language.isSelected());
 
         holder.itemView.setOnClickListener(v -> {
@@ -47,6 +47,20 @@ public class LanguageAdapter extends RecyclerView.Adapter<LanguageAdapter.Langua
 
             if (listener != null) {
                 listener.onLanguageSelected(language);
+            }
+        });
+        holder.cbLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (LanguageModel l : languageList) {
+                    l.setSelected(false);
+                }
+                language.setSelected(true);
+                notifyDataSetChanged();
+
+                if (listener != null) {
+                    listener.onLanguageSelected(language);
+                }
             }
         });
     }

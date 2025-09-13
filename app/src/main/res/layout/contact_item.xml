@@ -133,7 +133,7 @@
                     android:fontFamily="@font/poppins_regular"
                     android:includeFontPadding="false"
                     android:text="9876543210"
-                    android:textColor="@color/intro_sub_text_color"
+                    android:textColor="@color/_6b6c6d"
                     android:textSize="@dimen/_11ssp" />
 
             </LinearLayout>

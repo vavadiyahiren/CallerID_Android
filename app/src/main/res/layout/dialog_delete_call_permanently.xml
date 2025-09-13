@@ -72,7 +72,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="Cancel"
-                android:textColor="@color/gray1"
+                android:textColor="@color/gray2"
                 android:textSize="@dimen/_13sdp" />
 
             <View
@@ -91,7 +91,7 @@
                 android:gravity="center"
                 android:text="Delete"
                 android:includeFontPadding="false"
-                android:textColor="@color/white"
+                android:textColor="@color/white_og"
                 android:textSize="@dimen/_13sdp" />
 
 

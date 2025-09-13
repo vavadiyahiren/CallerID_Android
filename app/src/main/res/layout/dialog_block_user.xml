@@ -25,6 +25,7 @@
 
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
@@ -54,7 +55,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="@string/cancel"
-                android:textColor="@color/gray1"
+                android:textColor="@color/gray2"
                 android:textSize="@dimen/_12sdp" />
 
             <View
@@ -72,7 +73,7 @@
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
                 android:text="@string/block"
-                android:textColor="@color/white"
+                android:textColor="@color/white_og"
                 android:textSize="@dimen/_12sdp" />
 
 

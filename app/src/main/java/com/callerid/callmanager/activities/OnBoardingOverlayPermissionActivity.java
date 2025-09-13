@@ -2,10 +2,15 @@ package com.callerid.callmanager.activities;
 
 import static com.callerid.callmanager.utilities.Constant.PERMISSION_INFO_SHOW;
 
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -20,6 +25,8 @@ import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.OverlayPermissionAdapter;
 import com.callerid.callmanager.models.OnboardingOverlayItem;
 import com.callerid.callmanager.utilities.AppPref;
+import com.callerid.callmanager.utilities.Constant;
+import com.callerid.callmanager.utilities.Utility;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.util.ArrayList;
@@ -32,24 +39,72 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
     DotsIndicator indicator;
     AppCompatTextView txtTitle, txtAllowPermission, txtDesc, txtSkip;
     List<OnboardingOverlayItem> pages = new ArrayList<>();
+    int overlay1, overlay2, overlay3;
+    Handler handler = new Handler(Looper.getMainLooper());
+    private AppOpsManager appOps;
+    private AppOpsManager.OnOpChangedListener onOpChangedListener;
     ActivityResultLauncher<Intent> permissionResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
 
+                try {
+                    if (appOps != null && onOpChangedListener != null) {
+                        appOps.stopWatchingMode(onOpChangedListener);
+                        onOpChangedListener = null;
+                    }
+                } catch (Exception e) {
+
+                }
+
                 if (Settings.canDrawOverlays(this)) {
                     AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
-                    startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
+                    startActivity(new Intent(getApplicationContext(), LanguageActivity.class).setFlags((Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)));
                     finish();
                 } else {
                     viewPager.setCurrentItem(2);
                 }
 
             });
+    Runnable permissionChecker = new Runnable() {
+        @Override
+        public void run() {
+
+            if (Settings.canDrawOverlays(getApplicationContext())) {
+
+                Log.e("TAG", "overlayPermissionLauncher:result: permissionChecker");
+                try {
+                    if (appOps != null && onOpChangedListener != null) {
+                        appOps.stopWatchingMode(onOpChangedListener);
+                        onOpChangedListener = null;
+                    }
+                } catch (Exception e) {
+                }
+
+
+                if (Settings.canDrawOverlays(OnBoardingOverlayPermissionActivity.this)) {
+                    AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
+                    startActivity(new Intent(getApplicationContext(), LanguageActivity.class).setFlags((Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)));
+                    finish();
+                }
+
+                return; // stop checking
+            }
+
+            handler.postDelayed(this, 500);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding_overlay_permission);
+
+        Utility.setStatusBar(this);
 
         viewPager = findViewById(R.id.onboardingViewPager);
         indicator = findViewById(R.id.dotIndicator);
@@ -58,22 +113,33 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
         txtSkip = findViewById(R.id.txtSkip);
         txtAllowPermission = findViewById(R.id.txtAllowPermission);
 
+        boolean isDark = AppPref.getBooleanPref(this, Constant.THEME_MODE, false);
+        if (isDark) {
+            overlay1 = R.drawable.ic_overlay1_dark;
+            overlay2 = R.drawable.ic_overlay2_dark;
+            overlay3 = R.drawable.ic_overlay3_dark;
+        } else {
+            overlay1 = R.drawable.ic_overlay_1;
+            overlay2 = R.drawable.ic_overlay_2;
+            overlay3 = R.drawable.ic_overlay_3;
+        }
+
         pages.add(new OnboardingOverlayItem(
                 getString(R.string.almost_done),
                 getString(R.string.set_up_live_caller_id_by_enabling_draw_over_other_apps_in_your_system_settings),
-                R.drawable.ic_overlay_1,
+                overlay1,
                 getString(R.string.why)
         ));
         pages.add(new OnboardingOverlayItem(
                 getString(R.string.why_do_we_need_this_permission),
                 getString(R.string.overlay_permission_text),
-                R.drawable.ic_overlay_2,
+                overlay2,
                 getString(R.string.privacy_policy)
         ));
         pages.add(new OnboardingOverlayItem(
                 getString(R.string.one_last_step),
                 getString(R.string.almost_there_allow_this_final_permission_to_enable_caller_id_and_spam_detection_),
-                R.drawable.ic_overlay_3,
+                overlay3,
                 getString(R.string.skip)
         ));
 
@@ -132,6 +198,8 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     @Override
@@ -141,7 +209,9 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
         if (requestCode == OVERLAY_PERMISSION_REQUEST_CODE) {
             if (Settings.canDrawOverlays(this)) {
                 AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
-                startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
+                startActivity(new Intent(getApplicationContext(), LanguageActivity.class).setFlags((Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)));
                 finish();
             }
         }
@@ -149,15 +219,61 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
 
     private void checkOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            permissionResultLauncher.launch(intent);
-            //startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE);
-        } else {
-            AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
-            startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
-            finish();
+
+            try {
+                appOps = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+
+                AppOpsManager appOpsManager = this.appOps;
+                if (appOpsManager != null) {
+
+                    try {
+                        if (appOps != null && onOpChangedListener != null) {
+                            appOps.stopWatchingMode(onOpChangedListener);
+                            onOpChangedListener = null;
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                    String packageName = getApplicationContext().getPackageName();
+                    AppOpsManager.OnOpChangedListener onOpChangedListener = new AppOpsManager.OnOpChangedListener() {
+                        @Override // android.app.AppOpsManager.OnOpChangedListener
+                        public void onOpChanged(String op, String packageName2) {
+                            Log.e("TAG", "overlayPermissionLauncher:result: onOpChanged 1");
+                            if (Settings.canDrawOverlays(OnBoardingOverlayPermissionActivity.this)) {
+                                if (appOps != null) {
+                                    appOps.stopWatchingMode(this);
+                                }
+                                AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
+                                startActivity(new Intent(getApplicationContext(), LanguageActivity.class).setFlags((Intent.FLAG_ACTIVITY_NEW_TASK
+                                        | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                        | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)));
+                                finish();
+                            }
+
+                        }
+                    };
+
+                    this.onOpChangedListener = onOpChangedListener;
+
+                    appOpsManager.startWatchingMode("android:system_alert_window", packageName, onOpChangedListener);
+
+                    if (!Settings.canDrawOverlays(OnBoardingOverlayPermissionActivity.this)) {
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:" + getPackageName()));
+                        permissionResultLauncher.launch(intent);
+                        //startActivityForResult(intent, OVERLAY_PERMISSION_REQUEST_CODE);
+                    }
+
+                } else {
+                    handler.post(permissionChecker);
+                }
+            } catch (Exception e) {
+                handler.post(permissionChecker);
+            }
+
         }
     }
+
 
 }

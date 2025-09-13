@@ -13,6 +13,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#AFB1B7</color>
     <color name="gray1">#6B6C6D</color>
+    <color name="gray2">#6B6C6D</color>
     <color name="purple">#397283</color>
     <color name="purple_keypad">#397283</color>
     <color name="purple_light">#EFE3FF</color>
@@ -69,10 +70,11 @@
     <color name="_121214">#121214</color>
     <color name="_767676">#767676</color>
     <color name="f52b34">#F52B34</color>
-    <color name="f9dddf">#F9DDDF</color>
+    <color name="_f9dddf">#F9DDDF</color>
     <color name="_20b56e">#20B56E</color>
     <color name="dfe9ed">#DFE9ED</color>
     <color name="_397283">#397283</color>
+    <color name="_0c1319_title">#0C1319</color>
     <color name="_0c1319">#0C1319</color>
     <color name="e6e6e6">#E6E6E6</color>
     <color name="e6e6e6_keypad">#E6E6E6</color>
@@ -86,6 +88,10 @@
     <color name="_111827">#111827</color>
     <color name="white_dialog">#FFFFFF</color>
     <color name="white_search">#FFFFFF</color>
+    <color name="e7e8e8">#E7E8E8</color>
+    <color name="d8ddea">#D8DDEA</color>
+    <color name="_4a4a4a">#4A4A4A</color>
+
 
 
 </resources>
