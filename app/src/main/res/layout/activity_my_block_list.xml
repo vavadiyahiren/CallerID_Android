@@ -25,8 +25,8 @@
             android:layout_height="@dimen/_28sdp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:padding="@dimen/_2sdp"
             android:onClick="onBack"
+            android:padding="@dimen/_2sdp"
             app:srcCompat="@drawable/ic_back_" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -49,9 +49,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_5sdp"
-        android:layout_margin="@dimen/_8sdp"
-        android:background="@drawable/white_rectangle">
+        android:layout_margin="@dimen/_9sdp"
+        android:background="@drawable/white_rectangle"
+        android:padding="@dimen/_5sdp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBlocklist"
@@ -59,8 +59,50 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:overScrollMode="never"
-            tools:listitem="@layout/block_list_item"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/block_list_item" />
+
+        <LinearLayout
+            android:id="@+id/lnEmptyView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_12sdp"
+                android:src="@drawable/ic_block_contact" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/no_block_list_found"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/progreees_loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminateTint="@color/purple" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

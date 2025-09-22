@@ -1,5 +1,9 @@
 package com.callerid.callmanager.activities;
 
+import android.app.Activity;
+import android.app.role.RoleManager;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -31,6 +36,7 @@ import com.callerid.callmanager.fragments.KeypadFragment;
 import com.callerid.callmanager.fragments.SettingFragment;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
+import com.callerid.callmanager.utilities.LocaleHelper;
 import com.callerid.callmanager.utilities.Utility;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -44,7 +50,7 @@ import java.util.concurrent.Executors;
 
 public class DashboardActivity extends AppCompatActivity {
     private static final String TAG = "DashboardActivity";
-
+    private static final int CALL_DIALING_REQUEST_ID = 1004;
     LinearLayoutCompat llBottomMenu, llHome, llContacts, llKeypad, llBlocking, llProfile;
     AppCompatImageView imgHomeLine, imgHome, imgContactsLine, imgContacts, imgBlockingLine, imgBlocking, imgProfileLine, imgProfile, imgKeypad, imgKeypadLine;
     AppCompatTextView txtHome, txtContacts, txtBlocking, txtProfile, txtKeypad;
@@ -60,9 +66,13 @@ public class DashboardActivity extends AppCompatActivity {
         Utility.setStatusBar(this);
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
+        requestCallDialingRole();
         initView();
+    }
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 
     void initView() {
@@ -116,8 +126,13 @@ public class DashboardActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_view, SettingFragment.newInstance()).commit();
         });
 
+        if (Constant.isTheme_language_change) {
+            llProfile.performClick();
+        } else {
+            llHome.performClick();
+        }
+        Constant.isTheme_language_change = false;
 
-        llHome.performClick();
     }
 
     void setBottomMenu(View view) {
@@ -419,5 +434,41 @@ public class DashboardActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void requestCallDialingRole() {
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+
+            //RoleManager.ROLE_DIALER
+
+            RoleManager roleManager = (RoleManager) getSystemService(Context.ROLE_SERVICE);
+
+            if (roleManager != null) {
+                if (roleManager.isRoleAvailable(RoleManager.ROLE_DIALER) && !roleManager.isRoleHeld(RoleManager.ROLE_DIALER)) {
+                    Intent intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_DIALER);
+                    startActivityForResult(intent, CALL_DIALING_REQUEST_ID);
+                } else {
+
+                }
+            }
+        } else {
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CALL_DIALING_REQUEST_ID) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+            } else {
+
+            }
+
+        }
     }
 }

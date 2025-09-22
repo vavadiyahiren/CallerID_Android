@@ -90,5 +90,6 @@ dependencies {
     //implementation "com.google.android.gms:play-services-auth:20.7.0"
 
     implementation 'com.github.kapilmhr:AlphabetIndexFastScrollRecyclerview:1.0.0'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.27'
 
 }

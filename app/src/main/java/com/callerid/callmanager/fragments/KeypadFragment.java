@@ -3,6 +3,8 @@ package com.callerid.callmanager.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +34,7 @@ import com.callerid.callmanager.adapters.ContactSearchAdapter;
 import com.callerid.callmanager.database.AppDatabase;
 import com.callerid.callmanager.database.ContactEntity;
 import com.callerid.callmanager.database.ContactViewModel;
+import com.callerid.callmanager.database.Phone;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
 import com.karumi.dexter.Dexter;
@@ -41,7 +45,11 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class KeypadFragment extends Fragment {
@@ -91,10 +99,8 @@ public class KeypadFragment extends Fragment {
 
         db = AppDatabase.getInstance(getActivity());
 
-
         soundPool = new SoundPool.Builder().setMaxStreams(5).build();
         soundId = soundPool.load(getActivity(), R.raw.effect_tick, 1);
-
 
         LinearLayoutCompat ll0 = view.findViewById(R.id.ll0);
         LinearLayoutCompat ll1 = view.findViewById(R.id.ll1);
@@ -161,10 +167,24 @@ public class KeypadFragment extends Fragment {
         ll6.setOnClickListener(view1 -> editQuery.append("6"));
         ll7.setOnClickListener(view1 -> editQuery.append("7"));
         ll8.setOnClickListener(view1 -> editQuery.append("8"));
-        ll9.setOnClickListener(view1 -> editQuery.append("9"));
+        ll9.setOnClickListener(view1 -> editQuery.append("9"));*/
 
-        llHez.setOnClickListener(view1 -> editQuery.append("#"));
-        llStar.setOnClickListener(view1 -> editQuery.append("*"));*/
+        llHez.setOnClickListener(view1 -> {
+
+            if (KEY_PAD_DIAL_TONE)
+                soundPool.play(soundId, 1, 1, 1, 0, 1);
+
+            editQuery.append("#");
+        });
+        llStar.setOnClickListener(view1 -> {
+
+            if (KEY_PAD_DIAL_TONE)
+                soundPool.play(soundId, 1, 1, 1, 0, 1);
+
+            editQuery.append("*");
+
+
+        });
 
         ll0.setOnLongClickListener(view1 -> {
             editQuery.append("+");
@@ -324,5 +344,133 @@ public class KeypadFragment extends Fragment {
 
         soundPool.release();
         soundPool = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Activity activity = getActivity();
+
+        if (activity != null) {
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                fetchAndStoreContacts();
+            }
+        }
+
+    }
+
+    private void fetchAndStoreContacts() {
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        executor.execute(() -> {
+            List<ContactEntity> contactList = new ArrayList<>();
+            Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+            String[] projection = new String[]{
+                    ContactsContract.CommonDataKinds.Phone._ID,
+                    ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                    ContactsContract.CommonDataKinds.Phone.NUMBER,
+                    ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER,
+                    ContactsContract.CommonDataKinds.Phone.TYPE,
+                    ContactsContract.CommonDataKinds.Phone.LABEL,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+            };
+
+            long lastSavedDate = 0;
+            Cursor cursor;
+
+            long lastSyncTime = AppPref.getLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, 0);
+            if (lastSyncTime == 0) {
+                lastSyncTime = System.currentTimeMillis();
+                AppPref.setLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, lastSyncTime);
+
+                cursor = getActivity().getContentResolver().query(uri, projection, null, null,
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+            } else {
+                //lastSavedDate = callLogViewModel.getLastSavedCallDate();
+                lastSavedDate = AppPref.getLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, 0);
+                lastSyncTime = System.currentTimeMillis();
+                AppPref.setLongPref(getActivity(), Constant.LAST_SYNC_TIME_CONTACT, lastSyncTime);
+
+                String selection = null;
+                String[] selectionArgs = null;
+
+                selection = ContactsContract.CommonDataKinds.Phone.CONTACT_LAST_UPDATED_TIMESTAMP + " > ?";
+                selectionArgs = new String[]{String.valueOf(lastSavedDate)};
+
+
+                cursor = getActivity().getContentResolver().query(uri, projection, selection,
+                        selectionArgs, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
+
+            }
+
+
+            if (cursor != null) {
+                Map<String, ContactEntity> contactMap = new HashMap<>(); // To avoid duplicates by contactId
+
+                while (cursor.moveToNext()) {
+                    String contactId = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
+                    String displayName = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                    String number = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    String normalizedNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NORMALIZED_NUMBER));
+                    int type = cursor.getInt(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.TYPE));
+                    String label = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.LABEL));
+
+                    // Create phone object
+                    Phone phone = new Phone();
+                    phone.number = number;
+                    phone.normalizedNumber = normalizedNumber != null ? normalizedNumber : number;
+                    phone.type = type;
+                    phone.label = label != null ? label : "";
+
+                    ContactEntity contact = contactMap.get(contactId);
+                    if (contact == null) {
+                        contact = new ContactEntity();
+                        contact.contactId = contactId;
+                        contact.displayName = displayName;
+                        contact.isFavourite = false; // default value, set as needed
+                        contact.isSaved = true;
+                        contact.isBlocked = false;
+                        contact.spam = false;
+                        contact.phones = new ArrayList<>();
+                        contact.photo = null;
+                        contact.address = "";
+                        contact.callType = "";
+                        contact.oprator = "";
+                        contact.favoritesIndex = "";
+                        contact.callTime = "";
+                        contact.normalizedNumber = phone.normalizedNumber;
+
+                        // Fetch accounts for this contactId
+                        // contact.accounts = getAccountsForContact(contactId);
+
+                        contactMap.put(contactId, contact);
+                    }
+
+                    // Add phone if not duplicate
+                    boolean phoneExists = false;
+                    for (Phone p : contact.phones) {
+                        if (p.number.equals(phone.number)) {
+                            phoneExists = true;
+                            break;
+                        }
+                    }
+                    if (!phoneExists) {
+                        contact.phones.add(phone);
+                    }
+                }
+                cursor.close();
+
+                contactList.addAll(contactMap.values());
+
+                contactViewModel.insertAll(contactList);
+
+
+            }
+        });
     }
 }

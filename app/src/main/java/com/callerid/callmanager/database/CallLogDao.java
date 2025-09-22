@@ -53,4 +53,8 @@ public interface CallLogDao {
     List<CallLogEntity> getCallLogsByContactNew(String number,Long limit);
     @Query("SELECT * FROM CallLogsTable WHERE number IN (:numbers) ORDER BY date DESC limit :limit")
     List<CallLogEntity> getCallLogsByContactListNew(List<String> numbers,Long limit);
+
+
+    @Query("UPDATE CallLogsTable SET name = '', contactId='' WHERE number = :number")
+    void deleteNumber(String number);
 }

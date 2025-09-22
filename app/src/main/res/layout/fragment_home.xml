@@ -30,7 +30,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center_vertical"
-                    android:text="Recent Calls"
+                    android:text="@string/recent_calls"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_17sdp" />
 

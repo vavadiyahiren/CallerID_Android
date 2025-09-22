@@ -156,14 +156,12 @@ public class HomeFragment extends Fragment {
 
                 llToolbarSearch.setVisibility(View.GONE);
                 rrToolbar.setVisibility(View.VISIBLE);
-
             }
         });
 
         imgSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 llToolbarSearch.setVisibility(View.VISIBLE);
                 rrToolbar.setVisibility(View.GONE);
@@ -173,7 +171,6 @@ public class HomeFragment extends Fragment {
             }
 
         });
-
 
         edSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -331,7 +328,7 @@ public class HomeFragment extends Fragment {
         });
 
 
-        fetchCallLogsPermission();
+        //fetchCallLogsPermission();
         fetchCallLogs();
 
       /*  ContentObserver contactObserver = new ContentObserver(new Handler(Looper.getMainLooper())) {
@@ -346,6 +343,13 @@ public class HomeFragment extends Fragment {
                 ContactsContract.Contacts.CONTENT_URI, true, contactObserver);*/
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        fetchCallLogsPermission();
     }
 
     private void fetchCallLogsPermission() {
@@ -530,8 +534,7 @@ public class HomeFragment extends Fragment {
     /**
      * Fast contact ID lookup using pre-loaded phone number map
      */
-    private String getContactIdFast(String
-                                            phoneNumber, Map<String, String> phoneToContactIdMap) {
+    private String getContactIdFast(String phoneNumber, Map<String, String> phoneToContactIdMap) {
         if (phoneNumber == null) return "";
 
         // Try exact match first
@@ -551,7 +554,6 @@ public class HomeFragment extends Fragment {
                 if (contactId != null) return contactId;
             }
         }
-
         return "";
     }
 
@@ -767,7 +769,6 @@ public class HomeFragment extends Fragment {
 
         });
 
-
     }
 
     private void fetchCallLogs() {
@@ -778,7 +779,6 @@ public class HomeFragment extends Fragment {
             this.callLogs.addAll(callLogs);
             callLogAdapter.filterList(this.callLogs);
 
-
             if (callLogs != null && !callLogs.isEmpty()) {
                 llRecentCalls.setVisibility(View.VISIBLE);
                 llEmpty.setVisibility(View.GONE);
@@ -787,9 +787,7 @@ public class HomeFragment extends Fragment {
                 llEmpty.setVisibility(View.VISIBLE);
             }
 
-
         });
-
 
     }
 
@@ -874,7 +872,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
     }*/
 
 
@@ -952,7 +949,6 @@ public class HomeFragment extends Fragment {
 
             }
 
-
             if (cursor != null) {
                 Map<String, ContactEntity> contactMap = new HashMap<>(); // To avoid duplicates by contactId
 
@@ -1010,12 +1006,9 @@ public class HomeFragment extends Fragment {
                 cursor.close();
 
                 contactList.addAll(contactMap.values());
-
-
                 contactViewModel.insertAll(contactList);
 
                 handler.post(() -> {
-
 
                 });
             }

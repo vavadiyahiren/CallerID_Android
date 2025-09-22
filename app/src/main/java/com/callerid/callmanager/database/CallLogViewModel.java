@@ -45,4 +45,8 @@ public class CallLogViewModel extends AndroidViewModel {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    public void deleteNumber(String number){
+        repository.deleteNumber(number);
+    }
 }

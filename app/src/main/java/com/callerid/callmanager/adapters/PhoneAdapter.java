@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.database.Phone;
+import com.callerid.callmanager.utilities.AppPref;
+import com.callerid.callmanager.utilities.Constant;
 
 import java.util.List;
 
@@ -22,10 +24,13 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
 
     private List<Phone> phoneList;
     private Context context;
+    private boolean isNumberCopy;
 
     public PhoneAdapter(Context context, List<Phone> phoneList) {
         this.context = context;
         this.phoneList = phoneList;
+
+        isNumberCopy = AppPref.getBooleanPref(context, Constant.COPY_NUMBER, true);
     }
 
     @NonNull
@@ -42,12 +47,13 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
         holder.txtMobileType.setText(getTypeLabel(phone.type, "Main"));
         holder.txtMobile.setText("" + phone.number);
 
+
         // Copy icon click
         holder.imgCopy.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("Phone Number", phone.number);
             clipboard.setPrimaryClip(clip);
-            Toast.makeText(context, "Copied: " + phone.number, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show();
         });
 
         if (position == phoneList.size() - 1) {
@@ -55,6 +61,9 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
         } else {
             holder.line.setVisibility(View.VISIBLE);
         }
+
+        if (isNumberCopy)
+            holder.txtMobile.setTextIsSelectable(true);
     }
 
     @Override
@@ -96,6 +105,8 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneViewHol
             txtMobile = itemView.findViewById(R.id.txtMobile);
             imgCopy = itemView.findViewById(R.id.imgCopy);
             line = itemView.findViewById(R.id.line);
+
+
         }
     }
 }

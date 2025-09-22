@@ -24,6 +24,7 @@ public class CallLogEntity implements Serializable {
     public String address;
     public boolean isFavourite;
 
+
     public long getId() {
         return id;
     }

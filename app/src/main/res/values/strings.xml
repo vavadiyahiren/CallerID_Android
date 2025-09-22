@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">#Caller ID</string>
-    <string name="app_name_use">Caller ID</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">#Caller ID</string>
+    <string name="app_name_use" translatable="false">Caller ID</string>
+
     <string name="setting">Settings</string>
     <string name="blocking">Blocking</string>
     <string name="contacts">Contacts</string>
@@ -76,8 +75,7 @@
     <string name="permission_amp_your_data"><![CDATA[Permission & your data]]></string>
     <string name="phone_calls">Phone Calls</string>
     <string name="to_verify_your_phone_number_and_provide_helpful_features_like">To verify your phone number and provide helpful features like identifying unknown callers and enable in-app calling, we need to collect your phone number and call data.</string>
-    <string name="to_show_you_when_a_contact_is_calling_you_and_help_identify_unknown">To show you when a contact is calling you and help identify unknown numbers, we need access to your contacts.</string>
-    <string name="your_contacts_list_stays_on_your_phone_and_is_not_shared_with_caller_id">Your contacts list stays on your phone and is not shared with Caller ID</string>
+    <string name="to_show_you_when_a_contact_is_calling_you_and_help_identify_unknown">To show you when a contact is calling you and help identify unknown numbers, we need access to your contacts. <b>Your contacts list stays on your phone and is not shared with Caller ID</b></string>
     <string name="to_help_identify_unknown_callers_in_your_call_history_we_collect_call_log_data">To help identify unknown callers in your call history, we collect call log data.</string>
     <string name="you_re_in_control">You’re in control</string>
     <string name="you_have_full_control_over_all_permissions_and_can_">You have full control over all permissions and can adjust them anytime in the app’s privacy center.</string>
@@ -117,7 +115,12 @@
     <string name="permission">“Permission”</string>
     <string name="for_each_permission">for each permission</string>
     <string name="go_to_setting">Go to setting</string>
-    <string name="privacy_policy_url">https://sportsmaster.co.in/policy_files/callerID.html</string>
     <string name="spam_call">Spam Calls</string>
     <string name="unblock_str">Are you sure you want to unblock this number?</string>
+
+    <string name="no_block_list_found">No block Found\n</string>
+
+
+    <string name="privacy_policy_url" translatable="false">https://sportsmaster.co.in/policy_files/callerID.html</string>
+
 </resources>

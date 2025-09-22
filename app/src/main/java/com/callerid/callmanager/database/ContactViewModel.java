@@ -37,6 +37,10 @@ public class ContactViewModel extends AndroidViewModel {
         Executors.newSingleThreadExecutor().execute(contactDao::deleteAll);
     }
 
+    public void deleteContact(ContactEntity contactEntity) {
+        Executors.newSingleThreadExecutor().execute(() -> contactDao.deleteContactById(contactEntity.contactId));
+    }
+
     public void updateContact(ContactEntity contactEntity) {
         Executors.newSingleThreadExecutor().execute(() -> contactDao.updateContact(contactEntity));
     }

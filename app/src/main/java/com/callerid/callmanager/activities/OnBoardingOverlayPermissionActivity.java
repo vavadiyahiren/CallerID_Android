@@ -140,7 +140,7 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
                 getString(R.string.one_last_step),
                 getString(R.string.almost_there_allow_this_final_permission_to_enable_caller_id_and_spam_detection_),
                 overlay3,
-                getString(R.string.skip)
+                getString(R.string.privacy_policy)
         ));
 
 
@@ -192,9 +192,16 @@ public class OnBoardingOverlayPermissionActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 } else if (position == 2) {
-                    AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
+
+                    String url = getString(R.string.privacy_policy_url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+
+                    //Skip
+                   /* AppPref.setBooleanPref(getApplicationContext(), PERMISSION_INFO_SHOW, true);
                     startActivity(new Intent(getApplicationContext(), LanguageActivity.class));
-                    finish();
+                    finish();*/
                 }
             }
         });

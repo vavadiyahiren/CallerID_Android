@@ -24,11 +24,11 @@ import androidx.fragment.app.Fragment;
 
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.activities.EditProfileActivity;
-import com.callerid.callmanager.activities.FeedbackActivity;
 import com.callerid.callmanager.activities.LanguageActivity;
 import com.callerid.callmanager.activities.MyBlockListActivity;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
+import com.callerid.callmanager.utilities.LocaleHelper;
 import com.callerid.callmanager.utilities.Utility;
 
 import java.util.Objects;
@@ -37,7 +37,7 @@ public class SettingFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
     AppCompatImageView imgProfileEdit;
-    LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList,llLanguage;
+    LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList, llLanguage;
     AppCompatTextView txtLanguage;
     Switch switchCBN, switchBCNC, switchTheme;
     boolean isFirstTime = true;
@@ -74,14 +74,20 @@ public class SettingFragment extends Fragment {
     ActivityResultLauncher<Intent> editLanguageLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Intent data = result.getData();
+                if (result.getResultCode() == Activity.RESULT_OK) {
 
-                   /* String updatedName = data.getStringExtra("updatedName");
+                    Constant.isTheme_language_change = true;
 
-                    if (updatedName != null) {
-                        profileNameTextView.setText(updatedName);
-                    }*/
+                    String languageName = LocaleHelper.getLanguage(getActivity());
+
+                    if (languageName != null) {
+                        txtLanguage.setText(languageName);
+                    }
+
+                    if (getActivity() != null) {
+                        getActivity().recreate();
+                    }
+
                 }
             }
 
@@ -112,6 +118,18 @@ public class SettingFragment extends Fragment {
         llLogout = view.findViewById(R.id.llLogout);
         llFeedback = view.findViewById(R.id.llFeedback);
         imgProfileEdit = view.findViewById(R.id.imgProfileEdit);
+        txtLanguage = view.findViewById(R.id.txtLanguage);
+
+        String languageCode = LocaleHelper.getLanguage(getActivity());
+
+        if (languageCode != null) {
+
+            String languageName = LocaleHelper.getLanguageName(languageCode);
+
+            txtLanguage.setText(languageName);
+        }
+
+
         imgProfileEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,7 +158,7 @@ public class SettingFragment extends Fragment {
         llLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LanguageActivity.class);
+                Intent intent = new Intent(getActivity(), LanguageActivity.class).putExtra("IsFromSetting", true);
                 editLanguageLauncher.launch(intent);
             }
         });
@@ -217,10 +235,18 @@ public class SettingFragment extends Fragment {
                 // Save preference
                 AppPref.setBooleanPref(requireActivity(), Constant.THEME_MODE, isChecked);
 
-              // Change theme
-                  AppCompatDelegate.setDefaultNightMode(
+                Constant.isTheme_language_change = true;
+
+                // Change theme
+                AppCompatDelegate.setDefaultNightMode(
                         isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
                 );
+            }
+        });
+        switchCBN.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                AppPref.setBooleanPref(requireActivity(), Constant.COPY_NUMBER, b);
             }
         });
 

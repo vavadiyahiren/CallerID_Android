@@ -48,4 +48,10 @@ public class CallLogRepository {
     public void deleteAll() {
         executor.execute(() -> callLogDao.deleteAll());
     }
+
+    public void deleteNumber(String number){
+        executor.execute(() ->  callLogDao.deleteNumber(number));
+    }
+
+
 }

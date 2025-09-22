@@ -12,7 +12,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.BlockedNumberContract;
 import android.provider.ContactsContract;
+import android.telecom.TelecomManager;
 import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
@@ -149,6 +151,21 @@ public class Utility {
     }
     public static String normalizePhoneNumber(String phoneNumber) {
         return PhoneNumberUtils.normalizeNumber(phoneNumber);
+    }
+
+    public static  boolean isNumberBlocked(Context context, String phoneNumber) {
+        if (canUseBlockedNumberApi(context)) {
+            try {
+                return BlockedNumberContract.isBlocked(context, phoneNumber);
+            } catch (SecurityException e) {
+                e.printStackTrace(); // or log
+            }
+        }
+        return false;
+    }
+    public static boolean canUseBlockedNumberApi(Context context) {
+        TelecomManager tm = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        return tm != null && context.getPackageName().equals(tm.getDefaultDialerPackage());
     }
 
 }

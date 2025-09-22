@@ -1,5 +1,7 @@
 package com.callerid.callmanager.adapters;
 
+import static com.callerid.callmanager.utilities.Utility.isNumberBlocked;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -34,6 +36,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -43,10 +46,14 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
     private List<CallLogEntity> callLogList;
     private Activity context;
     private int expandedPosition = -1;
+    Calendar today = Calendar.getInstance();
+    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
     public CallLogAdapter(Activity context, List<CallLogEntity> callLogList) {
         this.context = context;
         this.callLogList = callLogList;
+
     }
 
     @NonNull
@@ -60,12 +67,38 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CallLogEntity model = callLogList.get(position);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        String dateStr = sdf.format(new Date(model.getDate()));
+        Date date = new Date(model.getDate());  // your date
 
-        holder.txtName.setText(model.getName());
-        holder.txtMobile.setText(model.getNumber());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        Calendar today = Calendar.getInstance();
+
+        String dateStr;
+
+        if (isSameDay(cal, today)) {
+            // Today
+            dateStr = "Today " + timeFormat.format(date);
+        } else {
+            // Yesterday
+            today.add(Calendar.DATE, -1);
+            if (isSameDay(cal, today)) {
+                dateStr = "Yesterday " + timeFormat.format(date);
+            } else {
+                // Else show full date
+                dateStr = dateFormat.format(date);
+            }
+        }
         holder.txtDate.setText(dateStr);
+
+
+      /*  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String dateStr = sdf.format(new Date(model.getDate()));
+        holder.txtDate.setText(dateStr);*/
+
+        holder.txtName.setText(model.getName().isEmpty()?model.getNumber():model.getName());
+        holder.txtMobile.setText(model.getNumber());
+
        // holder.txtDuration.setText(model.getDuration() + " sec");
         holder.txtName.setTextColor(ContextCompat.getColor(context, R.color.black));
 
@@ -113,6 +146,9 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
                 holder.imgCallType.setImageResource(R.drawable.ic_incoming_call);
                 drawableID = R.drawable.ic_incoming_call;
                 break;
+        }
+        if(isNumberBlocked(context,model.getNumber())){
+            holder.imgCallType.setImageResource(R.drawable.ic_block_user);
         }
 
       /*  if (!model.getPhoto().isEmpty()) {
@@ -283,5 +319,10 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
             imgAddContact = itemView.findViewById(R.id.imgAddContact);
             imgMoreInfo = itemView.findViewById(R.id.imgMoreInfo);
         }
+    }
+
+    private boolean isSameDay(Calendar cal1, Calendar cal2) {
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
     }
 }

@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.database.CallLogEntity;
 import com.callerid.callmanager.database.CallLogRepository;
+import com.callerid.callmanager.utilities.LocaleHelper;
 import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -129,6 +130,10 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
 
 
         // showCallReminderDialog();
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.onAttach(base));
     }
 
     private void showDeleteAllUserDialog() {

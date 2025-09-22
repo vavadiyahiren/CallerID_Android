@@ -34,11 +34,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.ContactAdapter;
 import com.callerid.callmanager.database.Account;
-import com.callerid.callmanager.database.AppDatabase;
 import com.callerid.callmanager.database.ContactEntity;
 import com.callerid.callmanager.database.ContactViewModel;
 import com.callerid.callmanager.database.Phone;
-import com.callerid.callmanager.models.ContactModel;
 import com.callerid.callmanager.utilities.AppPref;
 import com.callerid.callmanager.utilities.Constant;
 import com.karumi.dexter.Dexter;
@@ -165,7 +163,7 @@ public class ContactsFragment extends Fragment {
             }
         });
 
-        fetchContactsPermission();
+       // fetchContactsPermission();
 
         contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
@@ -244,9 +242,7 @@ public class ContactsFragment extends Fragment {
                                                 msg -> msg.number.toLowerCase().contains(filterPattern)
                                         );
 
-                            }catch (Exception e){
-
-                            }
+                            }catch (Exception e){ }
                             return match || messageMatch;
                         })
                         .collect(Collectors.toList());
@@ -268,6 +264,13 @@ public class ContactsFragment extends Fragment {
         // showBlockUserDialog();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        fetchContactsPermission();
     }
 
     private void fetchContactsPermission() {

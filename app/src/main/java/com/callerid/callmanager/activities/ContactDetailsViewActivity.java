@@ -3,6 +3,7 @@ package com.callerid.callmanager.activities;
 import static com.callerid.callmanager.utilities.Constant.getColorForCardView;
 import static com.callerid.callmanager.utilities.Constant.getColorForName;
 import static com.callerid.callmanager.utilities.Utility.getContactImageByContactId;
+import static com.callerid.callmanager.utilities.Utility.isNumberBlocked;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -160,72 +161,79 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         if (callLogEntity != null) {
 
+            isBlock = isNumberBlocked(getApplicationContext(), callLogEntity.number);
+
+            if (isBlock)
+                txtBlock.setText(R.string.unblock);
+            else
+                txtBlock.setText(R.string.block);
+
+
             if (callLogEntity.contactId != null && !callLogEntity.contactId.isEmpty()) {
 
                 contactViewModel.getContactsByContactId(callLogEntity.contactId).observe(this, contact -> {
 
                     contactEntity = contact;
 
-                    if (contactEntity.displayName != null) {
-                        txtName.setText(contactEntity.displayName);
-                    } else {
-                        txtName.setText(contactEntity.getNormalizedNumber());
-                    }
+                   // if (contactEntity != null) {
 
-                    isBlock = contactEntity.isBlocked;
-
-                    if (contactEntity.isFavourite)
-                        imgFavourite.setImageResource(R.drawable.star_fill);
-                    else
-                        imgFavourite.setImageResource(R.drawable.star);
-
-
-                    // Load contact image
-                    Bitmap bitmap = getContactImageByContactId(getApplicationContext(), contactEntity.getContactId());
-                    if (bitmap != null) {
-                        imgUser.setVisibility(View.VISIBLE);
-                        cvContactBg.setVisibility(View.GONE);
-                        imgUser.setImageBitmap(bitmap);
-                    } else {
-                        String name = contactEntity.getName() != null ? contactEntity.getName() : "";
-
-                        // Get current contact's initial
-                        String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
-
-                        txtFirstName.setText(currentInitial);
-
-                        int color = getColorForCardView(name);
-                        int colorText = getColorForName(name);
-                        cvContactBg.setCardBackgroundColor(color);
-                        txtFirstName.setTextColor(colorText);
-
-                        imgUser.setVisibility(View.GONE);
-                        cvContactBg.setVisibility(View.VISIBLE);
-                    }
-
-
-                    PhoneAdapter adapter = new PhoneAdapter(this, contactEntity.getPhones());
-                    rvPhoneList.setLayoutManager(new LinearLayoutManager(this));
-                    rvPhoneList.setAdapter(adapter);
-
-                    if (FromContact) {
-                        ArrayList<String> phonesList = new ArrayList<>();
-
-                        for (int i = 0; i < contactEntity.getPhones().size(); i++) {
-                            phonesList.add(contactEntity.getPhones().get(i).normalizedNumber);
+                        if (contactEntity.displayName != null) {
+                            txtName.setText(contactEntity.displayName);
+                        } else {
+                            txtName.setText(contactEntity.getNormalizedNumber());
                         }
 
+                        if (contactEntity.isFavourite)
+                            imgFavourite.setImageResource(R.drawable.star_fill);
+                        else
+                            imgFavourite.setImageResource(R.drawable.star);
 
-                        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-                        executor.execute(() -> {
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 4L);
-                            callLogsLess.clear();
-                            callLogsLess.addAll(callLogEntityList);
+                        // Load contact image
+                        Bitmap bitmap = getContactImageByContactId(getApplicationContext(), contactEntity.getContactId());
+                        if (bitmap != null) {
+                            imgUser.setVisibility(View.VISIBLE);
+                            cvContactBg.setVisibility(View.GONE);
+                            imgUser.setImageBitmap(bitmap);
+                        } else {
+                            String name = contactEntity.getName() != null ? contactEntity.getName() : "";
 
-                            // Now, update UI on main thread (if needed)
-                            runOnUiThread(() -> {
-                                setCallLogsHistory(callLogEntityList);
+                            // Get current contact's initial
+                            String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
+
+                            txtFirstName.setText(currentInitial);
+
+                            int color = getColorForCardView(name);
+                            int colorText = getColorForName(name);
+                            cvContactBg.setCardBackgroundColor(color);
+                            txtFirstName.setTextColor(colorText);
+
+                            imgUser.setVisibility(View.GONE);
+                            cvContactBg.setVisibility(View.VISIBLE);
+                        }
+
+                        PhoneAdapter adapter = new PhoneAdapter(this, contactEntity.getPhones());
+                        rvPhoneList.setLayoutManager(new LinearLayoutManager(this));
+                        rvPhoneList.setAdapter(adapter);
+
+                        if (FromContact) {
+                            ArrayList<String> phonesList = new ArrayList<>();
+
+                            for (int i = 0; i < contactEntity.getPhones().size(); i++) {
+                                phonesList.add(contactEntity.getPhones().get(i).normalizedNumber);
+                            }
+
+
+                            ExecutorService executor = Executors.newSingleThreadExecutor();
+
+                            executor.execute(() -> {
+                                List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 4L);
+                                callLogsLess.clear();
+                                callLogsLess.addAll(callLogEntityList);
+
+                                // Now, update UI on main thread (if needed)
+                                runOnUiThread(() -> {
+                                    setCallLogsHistory(callLogEntityList);
 
                                    /* CallStats stats = new CallStats();
 
@@ -274,20 +282,20 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                                     textOutgoingCallCount.setText("(" + stats.outgoingCount + ")");
                                     textMissedCallCount.setText("(" + stats.missedCount + ")");*/
 
+                                });
                             });
-                        });
 
 
-                        ExecutorService executorAll = Executors.newSingleThreadExecutor();
-                        executorAll.execute(() -> {
-                            List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 10000000L);
-                            callLogsAll.clear();
-                            callLogsAll.addAll(callLogEntityList);
+                            ExecutorService executorAll = Executors.newSingleThreadExecutor();
+                            executorAll.execute(() -> {
+                                List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 10000000L);
+                                callLogsAll.clear();
+                                callLogsAll.addAll(callLogEntityList);
 
-                        });
+                            });
 
-                        getCallStatsForContact(this, phonesList);
-
+                            getCallStatsForContact(this, phonesList);
+                      //  }
 
                     } else {
 
@@ -918,11 +926,17 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         txtYes.setOnClickListener(v -> {
 
+            callLogViewModel.deleteNumber(callLogEntity.number);
+            if (contactEntity != null)
+                contactViewModel.deleteContact(contactEntity);
+
             //deleteContactByPhoneNumber(this,callLogEntity.number);
 
             if (dialogBio.isShowing()) {
                 dialogBio.dismiss();
+                finish();
             }
+
         });
         txtNo.setOnClickListener(v -> {
             if (dialogBio.isShowing()) {
@@ -957,7 +971,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
             if (isBlock) {
                 unblockNumber(getApplicationContext(), callLogEntity.number);
             } else {
-                blockNumber(getApplicationContext(), callLogEntity.number);
+                boolean isDone = blockNumber(getApplicationContext(), callLogEntity.number);
+
             }
 
             if (dialogBio.isShowing()) {
@@ -1238,7 +1253,6 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
             isBlock = true;
             txtBlock.setText(R.string.unblock);
 
-
             return uri != null;
         }
         return false;
@@ -1281,6 +1295,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         TelecomManager tm = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
         return tm != null && context.getPackageName().equals(tm.getDefaultDialerPackage());
     }
+
     public boolean deleteContactByPhoneNumber(Context context, String phoneNumber) {
         ContentResolver contentResolver = context.getContentResolver();
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));

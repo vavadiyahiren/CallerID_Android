@@ -18,8 +18,12 @@ public interface ContactDao {
     @Query("SELECT * FROM contacts ORDER BY displayName COLLATE NOCASE ASC")
     LiveData<List<ContactEntity>> getAllContacts();
 
+    @Query("DELETE FROM contacts WHERE contactId=:contactId")
+    void deleteContactById(String contactId);
+
     @Query("DELETE FROM contacts")
     void deleteAll();
+
 
     @Update
     void updateContact(ContactEntity contactEntity);
