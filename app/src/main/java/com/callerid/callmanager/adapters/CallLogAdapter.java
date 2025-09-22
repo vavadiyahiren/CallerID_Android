@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -300,7 +301,7 @@ public class CallLogAdapter extends RecyclerView.Adapter<CallLogAdapter.ViewHold
         AppCompatImageView imgCallType, imgInfo, imgCall, imgWaCall, imgMsg, imgAddContact, imgMoreInfo;
         LinearLayout llBottomMenu;
         LinearLayoutCompat llMain;
-        RelativeLayout rrMain;
+        ConstraintLayout rrMain;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

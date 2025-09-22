@@ -11,9 +11,9 @@
         android:id="@+id/llTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_20sdp"
+        android:orientation="vertical"
         android:visibility="visible">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -23,9 +23,9 @@
             android:layout_gravity="start"
             android:fontFamily="@font/poppins_regular"
             android:gravity="start"
+            android:includeFontPadding="false"
             android:text="A"
             android:textAllCaps="true"
-            android:includeFontPadding="false"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />
 
@@ -57,15 +57,16 @@
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="0dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvFirstName2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="center"
@@ -78,14 +79,13 @@
                     android:id="@+id/ivUserProfile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_user"
                     android:visibility="gone"
                     tools:ignore="ContentDescription" />
-            </RelativeLayout>
+            </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>
@@ -123,8 +123,8 @@
                     android:includeFontPadding="false"
                     android:text="@string/mobile"
                     android:textColor="@color/intro_sub_text_color"
-                    android:visibility="gone"
-                    android:textSize="@dimen/_11ssp" />
+                    android:textSize="@dimen/_11ssp"
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNumber"
@@ -141,7 +141,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 
 </LinearLayout>

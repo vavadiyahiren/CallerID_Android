@@ -16,27 +16,26 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingVertical="@dimen/_7sdp">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rrToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:fontFamily="@font/poppins_medium"
                 android:text="@string/contacts"
+                android:layout_weight="1"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_19sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -59,7 +58,7 @@
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llToolbarSearch"
@@ -161,7 +160,7 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/progreees_loader"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -171,10 +170,10 @@
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:indeterminateTint="@color/purple" />
 
-        </RelativeLayout>
+        </FrameLayout>
 
 
     </RelativeLayout>

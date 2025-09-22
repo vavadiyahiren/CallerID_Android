@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -61,7 +62,7 @@ public class ContactsFragment extends Fragment {
     private static final String TAG = "ContactsFragment";
     ContactAdapter contactAdapter;
     LinearLayout llToolbarSearch;
-    RelativeLayout rrToolbar;
+    LinearLayout rrToolbar;
     AppCompatEditText edSearch;
     ActivityResultLauncher<Intent> addContactLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -74,7 +75,7 @@ public class ContactsFragment extends Fragment {
     private AppCompatImageView imgSearch, imgBack, imgAddContact;
     private RecyclerView rvContact;
     private AlphabetIndexFastScrollRecyclerView rvContactAlphabet;
-    private RelativeLayout progreees_loader;
+    private FrameLayout progreees_loader;
     private AppCompatImageView imgClose;
     private List<ContactEntity> contactList = new ArrayList<>();
     private List<ContactEntity> filteredList = new ArrayList<>();

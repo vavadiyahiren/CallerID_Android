@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.callerid.callmanager.R;
@@ -147,7 +148,7 @@ public class CallLogHistoryAdapter extends RecyclerView.Adapter<CallLogHistoryAd
         AppCompatImageView imgCallType;
         View viewLast;
         LinearLayoutCompat llMain;
-        RelativeLayout rrMain;
+        ConstraintLayout rrMain;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

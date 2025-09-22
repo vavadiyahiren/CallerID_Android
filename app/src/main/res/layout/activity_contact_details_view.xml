@@ -8,10 +8,10 @@
     android:orientation="vertical"
     tools:context=".activities.ContactDetailsViewActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/llToolbar"
@@ -131,8 +131,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/llBottomMenu"
-            android:layout_below="@+id/llToolbar"
+            android:layout_weight="1"
             android:overScrollMode="never">
 
             <LinearLayout
@@ -169,11 +168,11 @@
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
                                 android:layout_gravity="center">
-                               <!-- android:background="@drawable/profile_bg">-->
+                                <!-- android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
                                     android:id="@+id/imgFavourite"
-                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_width="@dimen/_28sdp"
                                     android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/star" />
@@ -249,10 +248,10 @@
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
                                 android:layout_gravity="center">
-                               <!-- android:background="@drawable/profile_bg">-->
+                                <!-- android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_width="@dimen/_28sdp"
                                     android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_msg" />
@@ -288,10 +287,10 @@
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
                                 android:layout_gravity="center">
-                            <!--    android:background="@drawable/profile_bg">-->
+                                <!--    android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_width="@dimen/_28sdp"
                                     android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_whatsapp" />
@@ -327,10 +326,10 @@
                                 android:layout_width="@dimen/_38sdp"
                                 android:layout_height="@dimen/_38sdp"
                                 android:layout_gravity="center">
-                             <!--   android:background="@drawable/profile_bg">-->
+                                <!--   android:background="@drawable/profile_bg">-->
 
                                 <androidx.appcompat.widget.AppCompatImageView
-                                   android:layout_width="@dimen/_28sdp"
+                                    android:layout_width="@dimen/_28sdp"
                                     android:layout_height="@dimen/_28sdp"
                                     android:layout_centerInParent="true"
                                     android:src="@drawable/ic_google_meet" />
@@ -369,8 +368,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         tools:itemCount="2"
-                        tools:listitem="@layout/item_phone"
-                        />
+                        tools:listitem="@layout/item_phone" />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -881,8 +879,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical"
                         android:overScrollMode="never"
-                        tools:itemCount="3"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
                         tools:listitem="@layout/recent_call_history_item" />
 
 
@@ -912,7 +910,6 @@
             android:id="@+id/llBottomMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <View
@@ -1012,7 +1009,7 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

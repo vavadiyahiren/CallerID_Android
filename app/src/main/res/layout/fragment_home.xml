@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
 
@@ -12,10 +13,9 @@
             android:id="@+id/llToolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
-            android:layout_alignParentTop="true"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/rrToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -24,12 +24,12 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtRecentCallType"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:fontFamily="@font/poppins_medium"
                     android:gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/recent_calls"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_17sdp" />
@@ -37,8 +37,7 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -46,6 +45,7 @@
                         android:layout_width="28dp"
                         android:layout_height="match_parent"
                         android:tint="@color/black"
+                        android:gravity="center_vertical"
                         app:srcCompat="@drawable/ic_search_new" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -55,11 +55,12 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:tint="@color/black"
+                        android:gravity="center_vertical"
                         app:srcCompat="@drawable/ic_more_new" />
 
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
-            </RelativeLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llToolbarSearch"
@@ -120,43 +121,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_50sdp"
             android:orientation="vertical">
-
-            <!-- <androidx.appcompat.widget.LinearLayoutCompat
-                 android:id="@+id/llFavourite"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentTop="true"
-                 android:orientation="vertical">
-
-                 <androidx.appcompat.widget.AppCompatTextView
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginHorizontal="@dimen/_10sdp"
-                     android:layout_marginVertical="@dimen/_5sdp"
-                     android:fontFamily="@font/sora_semibold"
-                     android:gravity="center"
-                     android:text="@string/favourites"
-                     android:textColor="@color/black"
-                     android:textSize="@dimen/_13sdp" />
-
-                 <androidx.recyclerview.widget.RecyclerView
-                     android:id="@+id/rrFavourite"
-                     android:layout_width="match_parent"
-                     android:layout_height="@dimen/_60sdp"
-                     android:orientation="horizontal"
-                     tools:listitem="@layout/favourite_layout_item"
-                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                 <View
-                     android:layout_width="match_parent"
-                     android:layout_height="1dp"
-                     android:layout_marginStart="@dimen/_10sdp"
-                     android:layout_marginTop="@dimen/_5sdp"
-                     android:background="#D8DDEA" />
-
-             </androidx.appcompat.widget.LinearLayoutCompat>-->
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llRecentCalls"
@@ -278,4 +243,4 @@
         </RelativeLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

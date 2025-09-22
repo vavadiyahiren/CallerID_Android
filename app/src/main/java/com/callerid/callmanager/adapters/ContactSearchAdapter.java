@@ -70,8 +70,10 @@ public class ContactSearchAdapter extends RecyclerView.Adapter<ContactSearchAdap
         if (bitmap != null) {
             holder.ivUserProfile.setVisibility(View.VISIBLE);
             holder.ivUserProfile.setImageBitmap(bitmap);
+            holder.tvFirstName2.setVisibility(View.GONE);
         } else {
             holder.ivUserProfile.setVisibility(View.GONE);
+            holder.tvFirstName2.setVisibility(View.VISIBLE);
         }
 
         // Set contact info

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_35sdp"
         android:background="@drawable/rounded_box"
         android:backgroundTint="@color/background"
+        android:orientation="vertical"
         android:padding="20dp">
 
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/txtContinue"
-            android:layout_alignParentTop="true"
-            android:overScrollMode="never">
+            android:layout_weight="1"
+             android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -233,9 +233,7 @@
             android:id="@+id/txtContinue"
             android:layout_width="@dimen/_160sdp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
+             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_8sdp"
             android:background="@drawable/edit_text_background"
             android:backgroundTint="@color/button_color"
@@ -248,7 +246,7 @@
             android:textColor="@color/white_og"
             android:textSize="@dimen/_14sdp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
 

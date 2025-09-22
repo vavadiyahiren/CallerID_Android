@@ -122,5 +122,6 @@
 
 
     <string name="privacy_policy_url" translatable="false">https://sportsmaster.co.in/policy_files/callerID.html</string>
+    <string name="caller_id_lets_you_decide_before_answering">Caller ID lets you decide before answering</string>
 
 </resources>

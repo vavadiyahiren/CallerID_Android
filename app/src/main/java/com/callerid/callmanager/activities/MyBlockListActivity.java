@@ -15,6 +15,7 @@ import android.provider.ContactsContract;
 import android.telecom.TelecomManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -48,7 +49,7 @@ public class MyBlockListActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 101;
     LinearLayout lnEmptyView;
     private RecyclerView rvBlocklist;
-    private RelativeLayout progress_loader;
+    private FrameLayout progress_loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

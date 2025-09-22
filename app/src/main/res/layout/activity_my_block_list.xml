@@ -46,7 +46,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_9sdp"
@@ -67,7 +67,7 @@
             android:id="@+id/lnEmptyView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -89,7 +89,7 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/progreees_loader"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -99,11 +99,11 @@
             <ProgressBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+               android:layout_gravity="center"
                 android:indeterminateTint="@color/purple" />
 
-        </RelativeLayout>
+        </FrameLayout>
 
-    </RelativeLayout>
+    </FrameLayout>
 
 </LinearLayout>

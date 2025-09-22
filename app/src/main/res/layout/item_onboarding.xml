@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,236 +8,479 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
+        <!-- App Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgApp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_launcher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Label Logs -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/ll_call_label_logs"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgApp">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgApp"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:src="@drawable/ic_launcher" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_line_left" />
 
-            <LinearLayout
-                android:id="@+id/ll_call_label_logs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@drawable/gradient_line_left" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/call_label_logs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_3sdp"
-                    android:background="@drawable/callind_identify_shape"
-                    android:gravity="center"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:paddingVertical="@dimen/_4sdp"
-                    android:text="Identify by Caller ID...."
-                    android:includeFontPadding="false"
-                    android:textColor="@color/white_og"
-                    android:textSize="@dimen/_10sdp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@drawable/gradient_line_right" />
-
-            </LinearLayout>
-
-            <!-- Main Title -->
-            <TextView
-                android:id="@+id/mainTitle"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/call_label_logs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:text="Bessie Cooper"
+                android:layout_marginHorizontal="@dimen/_3sdp"
+                android:background="@drawable/callind_identify_shape"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_4sdp"
+                android:text="Identify by Caller ID...."
                 android:textColor="@color/white_og"
-                android:textSize="@dimen/_20sdp"
-                android:textStyle="bold" />
-
-            <!-- Phone number -->
-
-            <TextView
-                android:id="@+id/phoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:text="+1 92565897450 - USA"
-                android:textColor="@color/white_og"
-                android:textSize="@dimen/_11sdp" />
-
-            <TextView
-                android:id="@+id/subTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="In calling...."
-                android:textColor="#E7E7E7"
                 android:textSize="@dimen/_10sdp" />
 
-            <LinearLayout
-                android:id="@+id/llSpamWarning"
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_line_right" />
+        </LinearLayout>
+
+        <!-- Main Title -->
+        <TextView
+            android:id="@+id/mainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:text="Bessie Cooper"
+            android:textColor="@color/white_og"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_call_label_logs" />
+
+        <!-- Phone number -->
+        <TextView
+            android:id="@+id/phoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="+1 92565897450 - USA"
+            android:textColor="@color/white_og"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mainTitle" />
+
+        <!-- Sub Title -->
+        <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="In calling...."
+            android:textColor="#E7E7E7"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phoneNumber" />
+
+        <!-- Spam Warning -->
+        <LinearLayout
+            android:id="@+id/llSpamWarning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:background="@drawable/bg_warning_banner"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subTitle">
+
+            <ImageView
+                android:id="@+id/iconWarning"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="Warning Icon"
+                android:src="@drawable/ic_warning_shield" />
+
+            <TextView
+                android:id="@+id/textWarning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_7sdp"
-                android:background="@drawable/bg_warning_banner"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="12dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="6dp"
-                android:visibility="gone">
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/poppins_regular"
+                android:includeFontPadding="false"
+                android:text="Warning: Potential fraud"
+                android:textColor="@color/white_og"
+                android:textSize="@dimen/_11sdp" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/iconWarning"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:contentDescription="Warning Icon"
-                    android:src="@drawable/ic_warning_shield" />
+        <!-- Incoming Call Holder -->
+        <LinearLayout
+            android:id="@+id/incoming_call_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llSpamWarning">
 
-                <TextView
-                    android:id="@+id/textWarning"
+            <!-- Decline -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/call_decline"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:clickable="false"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_call_end_new" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/call_decline_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="Warning: Potential fraud"
-                    android:textColor="@color/white_og"
                     android:includeFontPadding="false"
+                    android:text="@string/decline"
+                    android:textColor="@color/white_og"
                     android:textSize="@dimen/_11sdp" />
             </LinearLayout>
 
+            <!-- Middle Draggable -->
             <LinearLayout
-                android:id="@+id/incoming_call_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="visible">
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/call_left_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_chevron_left_vector_new" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/call_decline"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:clickable="false"
-                        android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_call_end_new" />
+                <ImageView
+                    android:id="@+id/call_draggable"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginHorizontal="@dimen/_14sdp"
+                    android:src="@drawable/ic_phone_down_vector_new" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/call_decline_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/poppins_regular"
-                        android:includeFontPadding="false"
-                        android:text="@string/decline"
-                        android:textColor="@color/white_og"
-                        android:textSize="@dimen/_11sdp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/call_right_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_10sdp">
-
-                    <ImageView
-                        android:id="@+id/call_left_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:contentDescription="@null"
-                        android:padding="@dimen/_2sdp"
-                        android:src="@drawable/ic_chevron_left_vector_new" />
-
-
-                    <ImageView
-                        android:id="@+id/call_draggable"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:layout_marginHorizontal="@dimen/_14sdp"
-                        android:src="@drawable/ic_phone_down_vector_new" />
-
-                    <ImageView
-                        android:id="@+id/call_right_arrow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:contentDescription="@null"
-                        android:padding="@dimen/_2sdp"
-                        android:src="@drawable/ic_chevron_right_vector_new" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/call_accept"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:clickable="false"
-                        android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_call_accept_new" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/call_accept_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/poppins_regular"
-                        android:includeFontPadding="false"
-                        android:text="@string/accept"
-                        android:textColor="@color/white_og"
-                        android:textSize="@dimen/_11sdp" />
-                </LinearLayout>
-
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/ic_chevron_right_vector_new" />
             </LinearLayout>
 
+            <!-- Accept -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/call_accept"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:clickable="false"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_call_accept_new" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/call_accept_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_regular"
+                    android:includeFontPadding="false"
+                    android:text="@string/accept"
+                    android:textColor="@color/white_og"
+                    android:textSize="@dimen/_11sdp" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Person Image Bottom -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgPerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:adjustViewBounds="true"
             android:src="@drawable/onboarding_person_img1"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:layout_weight="1">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:orientation="vertical">
+
+             <androidx.appcompat.widget.AppCompatImageView
+                 android:id="@+id/imgApp"
+                 android:layout_width="@dimen/_40sdp"
+                 android:layout_height="@dimen/_40sdp"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 android:src="@drawable/ic_launcher" />
+
+             <LinearLayout
+                 android:id="@+id/ll_call_label_logs"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginHorizontal="@dimen/_15sdp"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 android:orientation="horizontal"
+                 android:visibility="visible">
+
+
+                 <View
+                     android:layout_width="0dp"
+                     android:layout_height="1dp"
+                     android:layout_gravity="center_vertical"
+                     android:layout_weight="1"
+                     android:background="@drawable/gradient_line_left" />
+
+                 <androidx.appcompat.widget.AppCompatTextView
+                     android:id="@+id/call_label_logs"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginHorizontal="@dimen/_3sdp"
+                     android:background="@drawable/callind_identify_shape"
+                     android:gravity="center"
+                     android:paddingHorizontal="@dimen/_10sdp"
+                     android:paddingVertical="@dimen/_4sdp"
+                     android:text="Identify by Caller ID...."
+                     android:includeFontPadding="false"
+                     android:textColor="@color/white_og"
+                     android:textSize="@dimen/_10sdp" />
+
+                 <View
+                     android:layout_width="0dp"
+                     android:layout_height="1dp"
+                     android:layout_gravity="center_vertical"
+                     android:layout_weight="1"
+                     android:background="@drawable/gradient_line_right" />
+
+             </LinearLayout>
+
+             &lt;!&ndash; Main Title &ndash;&gt;
+             <TextView
+                 android:id="@+id/mainTitle"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginVertical="8dp"
+                 android:text="Bessie Cooper"
+                 android:textColor="@color/white_og"
+                 android:textSize="@dimen/_20sdp"
+                 android:textStyle="bold" />
+
+             &lt;!&ndash; Phone number &ndash;&gt;
+
+             <TextView
+                 android:id="@+id/phoneNumber"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginBottom="4dp"
+                 android:text="+1 92565897450 - USA"
+                 android:textColor="@color/white_og"
+                 android:textSize="@dimen/_11sdp" />
+
+             <TextView
+                 android:id="@+id/subTitle"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginBottom="8dp"
+                 android:text="In calling...."
+                 android:textColor="#E7E7E7"
+                 android:textSize="@dimen/_10sdp" />
+
+             <LinearLayout
+                 android:id="@+id/llSpamWarning"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/_7sdp"
+                 android:background="@drawable/bg_warning_banner"
+                 android:gravity="center_vertical"
+                 android:orientation="horizontal"
+                 android:paddingStart="12dp"
+                 android:paddingTop="6dp"
+                 android:paddingEnd="12dp"
+                 android:paddingBottom="6dp"
+                 android:visibility="gone">
+
+                 <ImageView
+                     android:id="@+id/iconWarning"
+                     android:layout_width="20dp"
+                     android:layout_height="20dp"
+                     android:contentDescription="Warning Icon"
+                     android:src="@drawable/ic_warning_shield" />
+
+                 <TextView
+                     android:id="@+id/textWarning"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_vertical"
+                     android:layout_marginStart="8dp"
+                     android:fontFamily="@font/poppins_regular"
+                     android:text="Warning: Potential fraud"
+                     android:textColor="@color/white_og"
+                     android:includeFontPadding="false"
+                     android:textSize="@dimen/_11sdp" />
+             </LinearLayout>
+
+             <LinearLayout
+                 android:id="@+id/incoming_call_holder"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:visibility="visible">
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical">
+
+                     <androidx.appcompat.widget.AppCompatImageView
+                         android:id="@+id/call_decline"
+                         android:layout_width="@dimen/_50sdp"
+                         android:layout_height="@dimen/_50sdp"
+                         android:clickable="false"
+                         android:padding="@dimen/_5sdp"
+                         android:src="@drawable/ic_call_end_new" />
+
+                     <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/call_decline_label"
+                         android:layout_width="wrap_content"
+                         android:layout_height="@dimen/_20sdp"
+                         android:layout_gravity="center"
+                         android:fontFamily="@font/poppins_regular"
+                         android:includeFontPadding="false"
+                         android:text="@string/decline"
+                         android:textColor="@color/white_og"
+                         android:textSize="@dimen/_11sdp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginHorizontal="@dimen/_15sdp"
+                     android:layout_marginBottom="@dimen/_10sdp">
+
+                     <ImageView
+                         android:id="@+id/call_left_arrow"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:contentDescription="@null"
+                         android:padding="@dimen/_2sdp"
+                         android:src="@drawable/ic_chevron_left_vector_new" />
+
+
+                     <ImageView
+                         android:id="@+id/call_draggable"
+                         android:layout_width="@dimen/_25sdp"
+                         android:layout_height="@dimen/_25sdp"
+                         android:layout_marginHorizontal="@dimen/_14sdp"
+                         android:src="@drawable/ic_phone_down_vector_new" />
+
+                     <ImageView
+                         android:id="@+id/call_right_arrow"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center"
+                         android:contentDescription="@null"
+                         android:padding="@dimen/_2sdp"
+                         android:src="@drawable/ic_chevron_right_vector_new" />
+
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:orientation="vertical">
+
+                     <ImageView
+                         android:id="@+id/call_accept"
+                         android:layout_width="@dimen/_50sdp"
+                         android:layout_height="@dimen/_50sdp"
+                         android:clickable="false"
+                         android:padding="@dimen/_5sdp"
+                         android:src="@drawable/ic_call_accept_new" />
+
+                     <androidx.appcompat.widget.AppCompatTextView
+                         android:id="@+id/call_accept_label"
+                         android:layout_width="wrap_content"
+                         android:layout_height="@dimen/_20sdp"
+                         android:layout_gravity="center"
+                         android:fontFamily="@font/poppins_regular"
+                         android:includeFontPadding="false"
+                         android:text="@string/accept"
+                         android:textColor="@color/white_og"
+                         android:textSize="@dimen/_11sdp" />
+                 </LinearLayout>
+
+             </LinearLayout>
+
+
+         </LinearLayout>
+
+         <androidx.appcompat.widget.AppCompatImageView
+             android:id="@+id/imgPerson"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:adjustViewBounds="true"
+             android:src="@drawable/onboarding_person_img1"
+             android:visibility="visible" />
+
+     </RelativeLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"

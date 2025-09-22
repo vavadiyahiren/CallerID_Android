@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
     public AppCompatImageView imgSearch, imgMore;
     public LinearLayoutCompat llFavourite, llRecentCalls, llEmpty, llToolbar;
     LinearLayout llToolbarSearch;
-    RelativeLayout rrToolbar;
+    LinearLayout rrToolbar;
     AppCompatEditText edSearch;
     RecyclerView rvRecentCalls;
     CallLogViewModel callLogViewModel;

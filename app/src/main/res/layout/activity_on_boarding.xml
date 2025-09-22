@@ -50,7 +50,7 @@
             android:fontFamily="@font/poppins_medium"
             android:includeFontPadding="false"
             android:gravity="center"
-            android:text="Caller ID lets you decide before answering"
+            android:text="@string/caller_id_lets_you_decide_before_answering"
             android:textColor="@color/black"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:textSize="@dimen/_14sdp"

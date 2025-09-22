@@ -1,5 +1,6 @@
 package com.callerid.callmanager.adapters;
 
+import static android.view.View.GONE;
 import static com.callerid.callmanager.utilities.Constant.getColorForCardView;
 import static com.callerid.callmanager.utilities.Constant.getColorForName;
 import static com.callerid.callmanager.utilities.Utility.getContactImageByContactId;
@@ -74,7 +75,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
             }
         }
 
-        holder.llTitle.setVisibility(showHeader ? View.VISIBLE : View.GONE);
+        holder.llTitle.setVisibility(showHeader ? View.VISIBLE : GONE);
 
         // Apply colors
         int color = getColorForCardView(name);
@@ -87,8 +88,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         if (bitmap != null) {
             holder.ivUserProfile.setVisibility(View.VISIBLE);
             holder.ivUserProfile.setImageBitmap(bitmap);
+            holder.tvFirstName2.setVisibility(GONE);
         } else {
-            holder.ivUserProfile.setVisibility(View.GONE);
+            holder.ivUserProfile.setVisibility(GONE);
+            holder.tvFirstName2.setVisibility(View.VISIBLE);
         }
 
         // Set contact info
