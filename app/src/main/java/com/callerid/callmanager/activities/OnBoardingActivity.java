@@ -50,7 +50,6 @@ public class OnBoardingActivity extends AppCompatActivity implements PermissionD
     List<OnboardingItem> pages = new ArrayList<>();
     int person1, person2;
 
-
     ActivityResultLauncher<Intent> permissionResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {

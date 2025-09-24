@@ -17,13 +17,11 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 
 import com.callerid.callmanager.R;
-import com.callerid.callmanager.activities.EditProfileActivity;
 import com.callerid.callmanager.activities.LanguageActivity;
 import com.callerid.callmanager.activities.MyBlockListActivity;
 import com.callerid.callmanager.utilities.AppPref;
@@ -36,7 +34,6 @@ import java.util.Objects;
 public class SettingFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment";
-    AppCompatImageView imgProfileEdit;
     LinearLayoutCompat llFeedback, llLogout, llPrivacyPolicy, llRateus, llShare, llCheckUpdate, llMyBlockList, llLanguage;
     AppCompatTextView txtLanguage;
     Switch switchCBN, switchBCNC, switchTheme;
@@ -117,7 +114,6 @@ public class SettingFragment extends Fragment {
 
         llLogout = view.findViewById(R.id.llLogout);
         llFeedback = view.findViewById(R.id.llFeedback);
-        imgProfileEdit = view.findViewById(R.id.imgProfileEdit);
         txtLanguage = view.findViewById(R.id.txtLanguage);
 
         String languageCode = LocaleHelper.getLanguage(getActivity());
@@ -129,15 +125,6 @@ public class SettingFragment extends Fragment {
             txtLanguage.setText(languageName);
         }
 
-
-        imgProfileEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                editProfileLauncher.launch(intent);
-            }
-        });
         llFeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
