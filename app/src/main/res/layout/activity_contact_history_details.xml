@@ -75,9 +75,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/llBottomMenu"
-            android:layout_below="@+id/llToolbar"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:overScrollMode="never">
 
             <LinearLayout
@@ -138,7 +137,6 @@
                         android:id="@+id/rrRecentCalls"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:orientation="vertical"
                         android:overScrollMode="never"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -157,7 +155,6 @@
             android:id="@+id/llBottomMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
             <View

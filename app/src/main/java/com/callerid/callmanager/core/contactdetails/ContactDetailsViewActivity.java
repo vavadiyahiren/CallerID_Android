@@ -34,17 +34,15 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.callerid.callmanager.R;
+import com.callerid.callmanager.core.calllogs.CallLogRepository;
+import com.callerid.callmanager.core.contacts.ContactRepository;
 import com.callerid.callmanager.database.AppDatabase;
 import com.callerid.callmanager.database.CallLogEntity;
-import com.callerid.callmanager.database.CallLogRepository;
-import com.callerid.callmanager.database.CallLogViewModel;
 import com.callerid.callmanager.database.ContactEntity;
-import com.callerid.callmanager.database.ContactViewModel;
 import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -79,7 +77,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     AppCompatTextView txtFirstName, txtBlock;
 
     CallLogEntity callLogEntity;
-    CallLogRepository repository;
+
     ContactEntity contactEntity;
     boolean FromContact = false;
     AppDatabase db;
@@ -89,8 +87,14 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     CallLogHistoryAdapter callLogHistoryAdapter;
     boolean isMore = false;
     boolean isBlock = false;
-    private ContactViewModel contactViewModel;
-    private CallLogViewModel callLogViewModel;
+
+  /*  private ContactViewModel contactViewModel;
+    private CallLogViewModel callLogViewModel;*/
+
+    private CallLogRepository callLogRepository;
+    private ContactRepository contactRepository;
+
+    ArrayList<String> phonesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +108,10 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         db = AppDatabase.getInstance(this);
 
-        repository = new CallLogRepository(getApplication());
-        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        callLogRepository = CallLogRepository.getInstance();
+        contactRepository = ContactRepository.getInstance();
 
+        // contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
         imgBack = findViewById(R.id.imgBack);
         txtEdit = findViewById(R.id.txtEdit);
@@ -154,7 +159,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         textMissedCallDuration = findViewById(R.id.textMissedCallDuration);
         textMissedCallCount = findViewById(R.id.textMissedCallCount);
 
-        callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
+        //callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
 
 
         if (callLogEntity != null) {
@@ -169,69 +174,68 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
             if (callLogEntity.contactId != null && !callLogEntity.contactId.isEmpty()) {
 
-                contactViewModel.getContactsByContactId(callLogEntity.contactId).observe(this, contact -> {
+                contactRepository.getContactsByContactId(callLogEntity.contactId).observe(this, contact -> {
 
                     contactEntity = contact;
 
-                   // if (contactEntity != null) {
+                    // if (contactEntity != null) {
 
-                        if (contactEntity.displayName != null) {
-                            txtName.setText(contactEntity.displayName);
-                        } else {
-                            txtName.setText(contactEntity.getNormalizedNumber());
+                    if (contactEntity.displayName != null) {
+                        txtName.setText(contactEntity.displayName);
+                    } else {
+                        txtName.setText(contactEntity.getNormalizedNumber());
+                    }
+
+                    if (contactEntity.isFavourite)
+                        imgFavourite.setImageResource(R.drawable.star_fill);
+                    else
+                        imgFavourite.setImageResource(R.drawable.star);
+
+
+                    // Load contact image
+                    Bitmap bitmap = getContactImageByContactId(getApplicationContext(), contactEntity.getContactId());
+                    if (bitmap != null) {
+                        imgUser.setVisibility(View.VISIBLE);
+                        cvContactBg.setVisibility(View.GONE);
+                        imgUser.setImageBitmap(bitmap);
+                    } else {
+                        String name = contactEntity.getName() != null ? contactEntity.getName() : "";
+
+                        // Get current contact's initial
+                        String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
+
+                        txtFirstName.setText(currentInitial);
+
+                        int color = getColorForCardView(name);
+                        int colorText = getColorForName(name);
+                        cvContactBg.setCardBackgroundColor(color);
+                        txtFirstName.setTextColor(colorText);
+
+                        imgUser.setVisibility(View.GONE);
+                        cvContactBg.setVisibility(View.VISIBLE);
+                    }
+
+                    PhoneAdapter adapter = new PhoneAdapter(this, contactEntity.getPhones());
+                    rvPhoneList.setLayoutManager(new LinearLayoutManager(this));
+                    rvPhoneList.setAdapter(adapter);
+
+                    if (FromContact) {
+
+                        for (int i = 0; i < contactEntity.getPhones().size(); i++) {
+                            phonesList.add(contactEntity.getPhones().get(i).normalizedNumber);
                         }
 
-                        if (contactEntity.isFavourite)
-                            imgFavourite.setImageResource(R.drawable.star_fill);
-                        else
-                            imgFavourite.setImageResource(R.drawable.star);
 
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
 
-                        // Load contact image
-                        Bitmap bitmap = getContactImageByContactId(getApplicationContext(), contactEntity.getContactId());
-                        if (bitmap != null) {
-                            imgUser.setVisibility(View.VISIBLE);
-                            cvContactBg.setVisibility(View.GONE);
-                            imgUser.setImageBitmap(bitmap);
-                        } else {
-                            String name = contactEntity.getName() != null ? contactEntity.getName() : "";
+                        executor.execute(() -> {
+                            List<CallLogEntity> callLogEntityList = callLogRepository.getAllCallLogsByContactListNew(phonesList, 4L);
+                            callLogsLess.clear();
+                            callLogsLess.addAll(callLogEntityList);
 
-                            // Get current contact's initial
-                            String currentInitial = !name.isEmpty() ? name.substring(0, 1).toUpperCase() : "#";
-
-                            txtFirstName.setText(currentInitial);
-
-                            int color = getColorForCardView(name);
-                            int colorText = getColorForName(name);
-                            cvContactBg.setCardBackgroundColor(color);
-                            txtFirstName.setTextColor(colorText);
-
-                            imgUser.setVisibility(View.GONE);
-                            cvContactBg.setVisibility(View.VISIBLE);
-                        }
-
-                        PhoneAdapter adapter = new PhoneAdapter(this, contactEntity.getPhones());
-                        rvPhoneList.setLayoutManager(new LinearLayoutManager(this));
-                        rvPhoneList.setAdapter(adapter);
-
-                        if (FromContact) {
-                            ArrayList<String> phonesList = new ArrayList<>();
-
-                            for (int i = 0; i < contactEntity.getPhones().size(); i++) {
-                                phonesList.add(contactEntity.getPhones().get(i).normalizedNumber);
-                            }
-
-
-                            ExecutorService executor = Executors.newSingleThreadExecutor();
-
-                            executor.execute(() -> {
-                                List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 4L);
-                                callLogsLess.clear();
-                                callLogsLess.addAll(callLogEntityList);
-
-                                // Now, update UI on main thread (if needed)
-                                runOnUiThread(() -> {
-                                    setCallLogsHistory(callLogEntityList);
+                            // Now, update UI on main thread (if needed)
+                            runOnUiThread(() -> {
+                                setCallLogsHistory(callLogEntityList);
 
                                    /* CallStats stats = new CallStats();
 
@@ -280,20 +284,20 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                                     textOutgoingCallCount.setText("(" + stats.outgoingCount + ")");
                                     textMissedCallCount.setText("(" + stats.missedCount + ")");*/
 
-                                });
                             });
+                        });
 
 
-                            ExecutorService executorAll = Executors.newSingleThreadExecutor();
-                            executorAll.execute(() -> {
-                                List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 10000000L);
-                                callLogsAll.clear();
-                                callLogsAll.addAll(callLogEntityList);
+                        ExecutorService executorAll = Executors.newSingleThreadExecutor();
+                        executorAll.execute(() -> {
+                            List<CallLogEntity> callLogEntityList = callLogRepository.getAllCallLogsByContactListNew(phonesList, 10000000L);
+                            callLogsAll.clear();
+                            callLogsAll.addAll(callLogEntityList);
 
-                            });
+                        });
 
-                            getCallStatsForContact(this, phonesList);
-                      //  }
+                        getCallStatsForContact(this, phonesList);
+                        //  }
 
                     } else {
 
@@ -393,7 +397,6 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
                 imgUser.setVisibility(View.GONE);
                 cvContactBg.setVisibility(View.VISIBLE);
-
 
                 ExecutorService executor = Executors.newSingleThreadExecutor();
                 executor.execute(() -> {
@@ -762,7 +765,6 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                                 Intent intent = new Intent(Intent.ACTION_CALL);
                                 intent.setData(Uri.parse("tel:" + callLogEntity.number));
                                 startActivity(intent);
-
                             }
 
                             @Override
@@ -848,7 +850,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 else
                     imgFavourite.setImageResource(R.drawable.star);
 
-                contactViewModel.updateContact(contactEntity);
+                contactRepository.updateContact(contactEntity);
             }
         });
         llShare.setOnClickListener(new View.OnClickListener() {
@@ -863,7 +865,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                isMore = !isMore;
+               /* isMore = !isMore;
 
                 if (isMore) {
                     txtViewAll.setText("View Less");
@@ -871,10 +873,10 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 } else {
                     txtViewAll.setText("View More");
                     setCallLogsHistory(callLogsLess);
-                }
+                }*/
 
 
-                //startActivity(new Intent(getApplicationContext(), ContactHistoryDetailsActivity.class).putExtra("CallLogEntity", callLogEntity));
+                startActivity(new Intent(getApplicationContext(), ContactHistoryDetailsActivity.class).putExtra("CallLogEntity", callLogEntity).putExtra("phonesList",phonesList));
             }
         });
 
@@ -924,9 +926,9 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         txtYes.setOnClickListener(v -> {
 
-            callLogViewModel.deleteNumber(callLogEntity.number);
+            callLogRepository.deleteNumber(callLogEntity.number);
             if (contactEntity != null)
-                contactViewModel.deleteContact(contactEntity);
+                contactRepository.deleteContact(contactEntity);
 
             //deleteContactByPhoneNumber(this,callLogEntity.number);
 

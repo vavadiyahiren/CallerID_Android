@@ -14,16 +14,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.callerid.callmanager.R;
+import com.callerid.callmanager.core.calllogs.CallLogRepository;
+import com.callerid.callmanager.core.contacts.ContactRepository;
 import com.callerid.callmanager.database.CallLogEntity;
-import com.callerid.callmanager.database.CallLogRepository;
 import com.callerid.callmanager.utilities.LocaleHelper;
 import com.callerid.callmanager.utilities.Utility;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ContactHistoryDetailsActivity extends AppCompatActivity {
 
@@ -34,10 +41,17 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
 
     RoundedImageView imgUser;
     AppCompatTextView txtName;
-    LinearLayoutCompat llCall, llMessage, llDelete, llBlock, llFavourite,llMeet,llWA,llShare;
+    LinearLayoutCompat llDelete, llBlock, llFavourite, llShare,llRecentCalls;
+    RecyclerView  rrRecentCalls;
 
     CallLogEntity callLogEntity;
-    CallLogRepository repository;
+
+    List<CallLogEntity> callLogsAll = new ArrayList<>();
+
+    private CallLogRepository callLogRepository;
+    private ContactRepository contactRepository;
+    private ArrayList<String> phonesList =new ArrayList<>();
+    CallLogHistoryAdapter callLogHistoryAdapter;
 
 
     @Override
@@ -48,7 +62,9 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
         Utility.setStatusBar(this);
 
         callLogEntity = (CallLogEntity) getIntent().getSerializableExtra("CallLogEntity");
-        repository = new CallLogRepository(getApplication());
+        phonesList = getIntent().getStringArrayListExtra("phonesList");
+
+        callLogRepository = CallLogRepository.getInstance();
 
         imgBack = findViewById(R.id.imgBack);
 
@@ -68,6 +84,13 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
         llFavourite = findViewById(R.id.llFavourite);
         imgFavourite = findViewById(R.id.imgFavourite);
 
+        llRecentCalls = findViewById(R.id.llRecentCalls);
+        rrRecentCalls = findViewById(R.id.rrRecentCalls);
+        rrRecentCalls.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        callLogHistoryAdapter = new CallLogHistoryAdapter(this, callLogsAll);
+        rrRecentCalls.setAdapter(callLogHistoryAdapter);
+
+
         if (callLogEntity != null) {
             txtName.setText(callLogEntity.name);
             //txtMobile.setText(callLogEntity.number);
@@ -77,7 +100,7 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
             else
                 imgFavourite.setImageResource(R.drawable.star);
 
-            if (callLogEntity.getPhoto()!=null && !callLogEntity.getPhoto().isEmpty()) {
+            if (callLogEntity.getPhoto() != null && !callLogEntity.getPhoto().isEmpty()) {
                 //holder.imgCallType.setImageURI(Uri.parse(model.getPhoto()));
 
                 Glide.with(getApplicationContext())
@@ -110,16 +133,38 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
                     else
                         imgFavourite.setImageResource(R.drawable.star);
 
-                    repository.updateCallLog(callLogEntity);
+                    callLogRepository.updateCallLog(callLogEntity);
                 }
             });
 
 
         }
 
+        ExecutorService executorAll = Executors.newSingleThreadExecutor();
+        executorAll.execute(() -> {
+            List<CallLogEntity> callLogEntityList = callLogRepository.getAllCallLogsByContactListNew(phonesList, 10000000L);
+
+            runOnUiThread(() -> {
+                setCallLogsHistory(callLogEntityList);
+            });
+
+        });
 
         // showCallReminderDialog();
     }
+
+    private void setCallLogsHistory(List<CallLogEntity> callLogList) {
+
+        callLogHistoryAdapter.updateList(callLogList);
+
+        if (callLogList != null && !callLogList.isEmpty()) {
+            llRecentCalls.setVisibility(View.VISIBLE);
+        } else {
+            llRecentCalls.setVisibility(View.GONE);
+        }
+
+    }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleHelper.onAttach(base));
@@ -178,6 +223,7 @@ public class ContactHistoryDetailsActivity extends AppCompatActivity {
 
         dialogBio.show();
     }
+
     private void showBlockContactDialog() {
 
         Dialog dialogBio;

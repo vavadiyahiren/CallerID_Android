@@ -33,13 +33,12 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.callerid.callmanager.BuildConfig;
 import com.callerid.callmanager.R;
-import com.callerid.callmanager.core.contacts.ContactViewModel;
+import com.callerid.callmanager.core.contacts.ContactRepository;
 import com.callerid.callmanager.database.CallLogEntity;
 import com.callerid.callmanager.database.ContactEntity;
 import com.callerid.callmanager.database.Phone;
@@ -70,10 +69,12 @@ public class HomeFragment extends Fragment {
     LinearLayout rrToolbar;
     AppCompatEditText edSearch;
     RecyclerView rvRecentCalls;
-    CallLogViewModel callLogViewModel;
+    //CallLogViewModel callLogViewModel;
+    CallLogRepository callLogRepository;
     Map<String, String> contactMap = new HashMap<>();
     CallLogAdapter callLogAdapter;
-    ContactViewModel contactViewModel;
+    //ContactViewModel contactViewModel;
+    ContactRepository contactRepository;
     private AppCompatImageView imgClose, imgBack;
     private AppCompatTextView txtClearAll, txtRecentCallType;
     private List<CallLogEntity> callLogs = new ArrayList<>();
@@ -103,8 +104,11 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         //loadContactsMap();
-        callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
-        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        // callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
+        // contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+
+        callLogRepository = CallLogRepository.getInstance();
+        contactRepository = ContactRepository.getInstance();
 
         rrToolbar = view.findViewById(R.id.rrToolbar);
         llToolbarSearch = view.findViewById(R.id.llToolbarSearch);
@@ -517,7 +521,7 @@ public class HomeFragment extends Fragment {
             }
 
             // Bulk insert to Room
-            callLogViewModel.insertAll(callLogList);
+            callLogRepository.insertAll(callLogList);
             Log.e("callLogList.size()", "new insert callLogList.size():" + callLogList.size());
             fetchAndStoreContacts();
         }).start();
@@ -750,7 +754,7 @@ public class HomeFragment extends Fragment {
 
     private void fetchCallLogs(int callingType) {
 
-        callLogViewModel.getCallLogsByType(callingType).observe(getViewLifecycleOwner(), callLogs -> {
+        callLogRepository.getCallLogsByType(callingType).observe(getViewLifecycleOwner(), callLogs -> {
 
             this.callLogs.clear();
             this.callLogs.addAll(callLogs);
@@ -770,7 +774,7 @@ public class HomeFragment extends Fragment {
 
     private void fetchCallLogs() {
 
-        callLogViewModel.getAllCallLogs().observe(getViewLifecycleOwner(), callLogs -> {
+        callLogRepository.getAllCallLogs().observe(getViewLifecycleOwner(), callLogs -> {
 
             this.callLogs.clear();
             this.callLogs.addAll(callLogs);
@@ -1002,7 +1006,7 @@ public class HomeFragment extends Fragment {
                 cursor.close();
 
                 contactList.addAll(contactMap.values());
-                contactViewModel.insertAll(contactList);
+                contactRepository.insertAll(contactList);
 
                 handler.post(() -> {
 

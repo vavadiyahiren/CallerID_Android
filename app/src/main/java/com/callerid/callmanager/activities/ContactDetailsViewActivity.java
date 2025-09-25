@@ -41,12 +41,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.callerid.callmanager.R;
 import com.callerid.callmanager.adapters.CallLogHistoryAdapter;
 import com.callerid.callmanager.adapters.PhoneAdapter;
+import com.callerid.callmanager.core.calllogs.CallLogRepository;
+import com.callerid.callmanager.core.contacts.ContactRepository;
 import com.callerid.callmanager.database.AppDatabase;
 import com.callerid.callmanager.database.CallLogEntity;
-import com.callerid.callmanager.database.CallLogRepository;
-import com.callerid.callmanager.database.CallLogViewModel;
 import com.callerid.callmanager.database.ContactEntity;
-import com.callerid.callmanager.database.ContactViewModel;
 import com.callerid.callmanager.utilities.Utility;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -81,7 +80,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     AppCompatTextView txtFirstName, txtBlock;
 
     CallLogEntity callLogEntity;
-    CallLogRepository repository;
+    CallLogRepository callLogRepository;
+    ContactRepository contactRepository;
     ContactEntity contactEntity;
     boolean FromContact = false;
     AppDatabase db;
@@ -91,8 +91,8 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
     CallLogHistoryAdapter callLogHistoryAdapter;
     boolean isMore = false;
     boolean isBlock = false;
-    private ContactViewModel contactViewModel;
-    private CallLogViewModel callLogViewModel;
+    /*private ContactViewModel contactViewModel;
+    private CallLogViewModel callLogViewModel;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +106,9 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         db = AppDatabase.getInstance(this);
 
-        repository = new CallLogRepository(getApplication());
-        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        callLogRepository = CallLogRepository.getInstance();
+        contactRepository = ContactRepository.getInstance();
+       //contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
 
         imgBack = findViewById(R.id.imgBack);
@@ -156,7 +157,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
         textMissedCallDuration = findViewById(R.id.textMissedCallDuration);
         textMissedCallCount = findViewById(R.id.textMissedCallCount);
 
-        callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
+        //callLogViewModel = new ViewModelProvider(this).get(CallLogViewModel.class);
 
 
         if (callLogEntity != null) {
@@ -171,7 +172,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
             if (callLogEntity.contactId != null && !callLogEntity.contactId.isEmpty()) {
 
-                contactViewModel.getContactsByContactId(callLogEntity.contactId).observe(this, contact -> {
+                contactRepository.getContactsByContactId(callLogEntity.contactId).observe(this, contact -> {
 
                     contactEntity = contact;
 
@@ -227,7 +228,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                             ExecutorService executor = Executors.newSingleThreadExecutor();
 
                             executor.execute(() -> {
-                                List<CallLogEntity> callLogEntityList = db.callLogDao().getCallLogsByContactListNew(phonesList, 4L);
+                                List<CallLogEntity> callLogEntityList = callLogRepository.getAllCallLogsByContactListNew(phonesList, 4L);
                                 callLogsLess.clear();
                                 callLogsLess.addAll(callLogEntityList);
 
@@ -850,7 +851,7 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
                 else
                     imgFavourite.setImageResource(R.drawable.star);
 
-                contactViewModel.updateContact(contactEntity);
+                contactRepository.updateContact(contactEntity);
             }
         });
         llShare.setOnClickListener(new View.OnClickListener() {
@@ -926,9 +927,9 @@ public class ContactDetailsViewActivity extends AppCompatActivity {
 
         txtYes.setOnClickListener(v -> {
 
-            callLogViewModel.deleteNumber(callLogEntity.number);
+            callLogRepository.deleteNumber(callLogEntity.number);
             if (contactEntity != null)
-                contactViewModel.deleteContact(contactEntity);
+                contactRepository.deleteContact(contactEntity);
 
             //deleteContactByPhoneNumber(this,callLogEntity.number);
 

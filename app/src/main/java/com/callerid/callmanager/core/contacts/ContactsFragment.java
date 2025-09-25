@@ -77,7 +77,8 @@ public class ContactsFragment extends Fragment {
     private List<ContactEntity> contactList = new ArrayList<>();
     private List<ContactEntity> filteredList = new ArrayList<>();
 
-    private ContactViewModel contactViewModel;
+    //private ContactViewModel contactViewModel;
+    private ContactRepository contactRepository;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -162,11 +163,12 @@ public class ContactsFragment extends Fragment {
         });
 
        // fetchContactsPermission();
+       // contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
-        contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        contactRepository = ContactRepository.getInstance();
 
         // ✅ Observe LiveData from Room
-        contactViewModel.getAllContacts().observe(getViewLifecycleOwner(), contactList -> {
+        contactRepository.getAllContacts().observe(getViewLifecycleOwner(), contactList -> {
 
             this.contactList.clear();
             this.contactList.addAll(contactList);
@@ -438,7 +440,7 @@ public class ContactsFragment extends Fragment {
 
                 contactList.addAll(contactMap.values());
 
-                contactViewModel.insertAll(contactList);
+                contactRepository.insertAll(contactList);
 
                 handler.post(() -> {
                     progreees_loader.setVisibility(View.GONE);
