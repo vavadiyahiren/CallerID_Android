@@ -73,8 +73,9 @@ public class CallLogViewHolder extends RecyclerView.ViewHolder {
         binding.txtName.setText(model.getName().isEmpty() ? model.getNumber() : model.getName());
         binding.txtMobile.setText(model.getNumber());
         binding.txtName.setTextColor(ContextCompat.getColor(context, R.color.black));
+        binding.txtCallTime.setText(model.getTimeDuration());
 
-        // Duration
+      /*
         try {
             int totalSeconds = Integer.parseInt(model.getDuration());
             int hours = totalSeconds / 3600;
@@ -88,7 +89,7 @@ public class CallLogViewHolder extends RecyclerView.ViewHolder {
             binding.txtCallTime.setText(durationText);
         } catch (Exception e) {
             binding.txtCallTime.setText("-");
-        }
+        }*/
 
         // Call type icon
         switch (model.getType()) {

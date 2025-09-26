@@ -19,6 +19,7 @@ public class CallLogEntity implements Serializable {
     public String photo;
     public long date;
     public String duration;
+    public String timeDuration;
 
     public boolean isSaved;
     public String address;
@@ -87,6 +88,14 @@ public class CallLogEntity implements Serializable {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public String getTimeDuration() {
+        return timeDuration;
+    }
+
+    public void setTimeDuration(String timeDuration) {
+        this.timeDuration = timeDuration;
     }
 
     public boolean isSaved() {

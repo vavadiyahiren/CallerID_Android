@@ -27,7 +27,6 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -162,8 +161,8 @@ public class ContactsFragment extends Fragment {
             }
         });
 
-       // fetchContactsPermission();
-       // contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
+        // fetchContactsPermission();
+        // contactViewModel = new ViewModelProvider(this).get(ContactViewModel.class);
 
         contactRepository = ContactRepository.getInstance();
 
@@ -177,20 +176,9 @@ public class ContactsFragment extends Fragment {
             rvContactAlphabet.setIndexTextSize(12);
             rvContactAlphabet.setIndexBarTextColor(R.color._06b7280);
             rvContactAlphabet.setIndexBarColor(R.color.white);
-//                recyclerView.setIndexBarVisibility(true);
-//                recyclerView.setIndexBarTransparentValue((float) 1);
             rvContactAlphabet.setIndexbarHighLateTextColor(R.color.orange);
             rvContactAlphabet.setIndexBarHighLateTextVisibility(true);
-//
-//                recyclerView.setIndexBarCornerRadius(3);
-//
-//
-//                recyclerView.setIndexbarMargin(40);
 
-//                recyclerView.setIndexbarWidth(40);
-
-//                recyclerView.setPreviewPadding(20);
-//
             rvContactAlphabet.setPreviewVisibility(true);
             rvContactAlphabet.setTypeface(ResourcesCompat.getFont(requireActivity(), R.font.poppins_semibold));
 
@@ -220,7 +208,7 @@ public class ContactsFragment extends Fragment {
 
                 String filterPattern = editable.toString().trim();
 
-                if(filterPattern.isEmpty()){
+                if (filterPattern.isEmpty()) {
                     contactAdapter.filterList(contactList);
                     return;
                 }
@@ -232,7 +220,7 @@ public class ContactsFragment extends Fragment {
                             try {
                                 match = contact.getName().toLowerCase().contains(filterPattern);
 
-                            }catch (Exception e){
+                            } catch (Exception e) {
 
                             }
                             boolean messageMatch = false;
@@ -242,7 +230,8 @@ public class ContactsFragment extends Fragment {
                                                 msg -> msg.number.toLowerCase().contains(filterPattern)
                                         );
 
-                            }catch (Exception e){ }
+                            } catch (Exception e) {
+                            }
                             return match || messageMatch;
                         })
                         .collect(Collectors.toList());
@@ -287,7 +276,8 @@ public class ContactsFragment extends Fragment {
                         if (report.areAllPermissionsGranted()) {
                             //new MyAsyncContacts().execute(); // or whatever logic you need
                             //getAllContacts();
-                            fetchAndStoreContacts();
+                            // fetchAndStoreContacts();
+                            ContactUtility.fetchAndStoreContacts(getActivity(), progreees_loader);
                         }
 
                         if (report.isAnyPermissionPermanentlyDenied()) {

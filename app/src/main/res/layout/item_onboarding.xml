@@ -251,7 +251,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <!-- <RelativeLayout
+  <!-- <RelativeLayout
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:layout_weight="1">
@@ -309,7 +309,7 @@
 
              </LinearLayout>
 
-             &lt;!&ndash; Main Title &ndash;&gt;
+
              <TextView
                  android:id="@+id/mainTitle"
                  android:layout_width="wrap_content"
@@ -320,7 +320,6 @@
                  android:textSize="@dimen/_20sdp"
                  android:textStyle="bold" />
 
-             &lt;!&ndash; Phone number &ndash;&gt;
 
              <TextView
                  android:id="@+id/phoneNumber"

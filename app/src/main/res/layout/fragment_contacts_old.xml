@@ -1,200 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ContactsFragment">
+    android:layout_alignParentTop="true"
+    android:background="@color/stock">
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:background="@color/stock">
+        android:layout_height="@dimen/_140sdp"
+        android:background="@color/purple"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/llToolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_140sdp"
-            android:background="@color/purple"
-            android:orientation="vertical"
-            android:padding="@dimen/_10sdp">
+            android:layout_height="wrap_content"
+            android:background="@color/purple">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/purple">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/sora_semibold"
-                    android:text="@string/contacts"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_19sdp" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgSearch"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_centerVertical="true"
-                        app:srcCompat="@drawable/ic_search_normal" />
-
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_60sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
-            android:background="@drawable/dialog_bg"
-            android:orientation="vertical">
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/sora_semibold"
+                android:text="@string/contacts"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_19sdp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp">
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@drawable/white_rectangle"
-                    android:backgroundTint="@color/pink_light"
-                    android:fontFamily="@font/sora_semibold"
-                    android:paddingHorizontal="@dimen/_20sdp"
-                    android:paddingVertical="@dimen/_6sdp"
-                    android:text="All"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13sdp" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtFavourite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_1sdp"
-                    android:backgroundTint="@color/pink_light"
-                    android:fontFamily="@font/sora_semibold"
-                    android:paddingHorizontal="@dimen/_16sdp"
-                    android:paddingVertical="@dimen/_6sdp"
-                    android:text="Favourite"
-                    android:textColor="@color/gray1"
-                    android:textSize="@dimen/_13sdp" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgSearch"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_search_normal" />
 
 
             </androidx.appcompat.widget.LinearLayoutCompat>
+        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rrAll"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_5sdp"
-                android:visibility="gone">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvAllContact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="end|bottom"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:src="@drawable/button_call" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            </RelativeLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:background="@drawable/dialog_bg"
+        android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rrFavourite"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:visibility="visible">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp">
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvFavourite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    android:overScrollMode="never"
-                    app:spanCount="4"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/favourite_list_layout_item" />
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/llFavouriteEmpty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:orientation="vertical">
-
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_150sdp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_favourite_empty" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/sora_semibold"
-                        android:gravity="center"
-                        android:lineSpacingExtra="@dimen/_2sdp"
-                        android:text="@string/quickly_call_your_n_favourite_contacts"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_16sdp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="@drawable/white_rectangle"
+                android:backgroundTint="@color/pink_light"
+                android:fontFamily="@font/sora_semibold"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_6sdp"
+                android:text="All"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp" />
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtAddNewFavourite"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_36sdp"
-                        android:layout_gravity="bottom"
-                        android:layout_margin="@dimen/_20sdp"
-                        android:background="@drawable/background_key"
-                        android:backgroundTint="@color/purple"
-                        android:fontFamily="@font/sora_medium"
-                        android:gravity="center"
-                        android:text="Add New Favourite Contact"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_13sdp" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtFavourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:backgroundTint="@color/pink_light"
+                android:fontFamily="@font/sora_semibold"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:paddingVertical="@dimen/_6sdp"
+                android:text="Favourite"
+                android:textColor="@color/gray1"
+                android:textSize="@dimen/_13sdp" />
 
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-            </RelativeLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </FrameLayout>
-</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rrAll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAllContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="@dimen/_10sdp"
+                android:src="@drawable/button_call" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rrFavourite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:visibility="visible">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="4"
+                tools:itemCount="4"
+                tools:listitem="@layout/favourite_list_layout_item" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llFavouriteEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_favourite_empty" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/sora_semibold"
+                    android:gravity="center"
+                    android:lineSpacingExtra="@dimen/_2sdp"
+                    android:text="@string/quickly_call_your_n_favourite_contacts"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_16sdp" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAddNewFavourite"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_36sdp"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="@dimen/_20sdp"
+                    android:background="@drawable/background_key"
+                    android:backgroundTint="@color/purple"
+                    android:fontFamily="@font/sora_medium"
+                    android:gravity="center"
+                    android:text="Add New Favourite Contact"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</FrameLayout>

@@ -55,7 +55,6 @@ public class DashboardActivity extends AppCompatActivity {
     AppCompatImageView imgHomeLine, imgHome, imgContactsLine, imgContacts, imgBlockingLine, imgBlocking, imgProfileLine, imgProfile, imgKeypad, imgKeypadLine;
     AppCompatTextView txtHome, txtContacts, txtBlocking, txtProfile, txtKeypad;
     FragmentContainerView fragment_container_view;
-
     private ContactViewModel contactViewModel;
 
     @Override

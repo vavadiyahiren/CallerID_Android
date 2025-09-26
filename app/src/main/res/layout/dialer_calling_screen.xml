@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/llBg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,15 +14,15 @@
         android:background="@drawable/onboarding_bg_2"
         android:visibility="gone" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/llTop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/_15sdp"
             android:gravity="center"
             android:orientation="vertical">
@@ -74,7 +74,7 @@
 
             </LinearLayout>
 
-            <!-- Main Title -->
+
             <TextView
                 android:id="@+id/mainTitle"
                 android:layout_width="wrap_content"
@@ -86,7 +86,6 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_21sdp" />
 
-            <!-- Phone number -->
 
             <TextView
                 android:id="@+id/phoneNumber"
@@ -148,18 +147,16 @@
         </LinearLayout>
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/llTop"
-            android:layout_centerInParent="true"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
 
             <LinearLayout
@@ -180,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <FrameLayout
                             android:id="@+id/rr_call_toggle_microphone"
                             android:layout_width="@dimen/_54sdp"
                             android:layout_height="@dimen/_54sdp"
@@ -190,11 +187,11 @@
                                 android:id="@+id/call_toggle_microphone"
                                 android:layout_width="@dimen/_30sdp"
                                 android:layout_height="@dimen/_30sdp"
-                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
                                 android:padding="@dimen/_5sdp"
                                 android:src="@drawable/ic_microphone_off_vector" />
 
-                        </RelativeLayout>
+                        </FrameLayout>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/txtMicrophone"
@@ -254,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <FrameLayout
                             android:id="@+id/rr_call_toggle_hold"
                             android:layout_width="@dimen/_54sdp"
                             android:layout_height="@dimen/_54sdp"
@@ -264,11 +261,11 @@
                                 android:id="@+id/call_toggle_hold"
                                 android:layout_width="@dimen/_30sdp"
                                 android:layout_height="@dimen/_30sdp"
-                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
                                 android:padding="@dimen/_5sdp"
                                 android:src="@drawable/ic_pause_vector" />
 
-                        </RelativeLayout>
+                        </FrameLayout>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/txtHold"
@@ -328,7 +325,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <FrameLayout
                             android:id="@+id/rr_call_note"
                             android:layout_width="@dimen/_54sdp"
                             android:layout_height="@dimen/_54sdp"
@@ -338,11 +335,11 @@
                                 android:id="@+id/call_note"
                                 android:layout_width="@dimen/_30sdp"
                                 android:layout_height="@dimen/_30sdp"
-                                android:layout_centerInParent="true"
+                                android:layout_gravity="center"
                                 android:padding="@dimen/_5sdp"
                                 android:src="@drawable/ic_note" />
 
-                        </RelativeLayout>
+                        </FrameLayout>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/txtNote"
@@ -392,8 +389,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <ImageView
                 android:id="@+id/call_end"
@@ -410,8 +407,6 @@
             android:id="@+id/incoming_call_holder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/_30sdp"
             android:visibility="gone">
@@ -504,7 +499,7 @@
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
-</RelativeLayout>
+</FrameLayout>
